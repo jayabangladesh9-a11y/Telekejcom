@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#007d3d"> 
+    <title>Smart Recharge - Bondhu Telecom</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0; padding: 0; box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body { 
+            background-color: #f8fafc; 
+            display: flex; 
+            justify-content: center; 
+            overflow-x: hidden;
+        }
+
+        .app-shell {
+            width: 100%; max-width: 450px;
+            background: #f8fafc; min-height: 100vh;
+            display: flex; flex-direction: column;
+            position: relative;
+            padding-bottom: 50px; 
+            transition: padding-bottom 0.4s ease;
+        }
+
+        /* কিবোর্ড ওপেন থাকলে স্ক্রল করার জায়গা বাড়বে */
+        .app-shell.kb-open {
+            padding-bottom: 250px;
+        }
+
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: linear-gradient(rgba(0, 125, 61, 0.85), rgba(0, 125, 61, 0.85)), url('1.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            padding: 20px 18px 25px 18px; 
+            color: white;
+            border-bottom-left-radius: 25px; border-bottom-right-radius: 25px;
+            display: flex; align-items: center; gap: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .container { padding: 15px; flex: 1; display: flex; flex-direction: column; align-items: center; }
+
+        .input-card {
+            width: 100%;
+            background: white; border-radius: 20px;
+            padding: 18px; box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            margin-bottom: 15px;
+            margin-top: -15px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .input-wrapper {
+            position: relative; display: flex; align-items: center;
+            background: #f0fdf4;
+            border: 1px solid #dcfce7;
+            border-radius: 12px;
+            padding: 6px 10px;
+            margin-bottom: 15px;
+            transition: 0.3s ease;
+        }
+
+        .input-wrapper:focus-within {
+            border-color: #007d3d;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(0, 125, 61, 0.05);
+        }
+
+        .icon-box {
+            width: 32px; height: 32px;
+            background: white;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            border: 1px solid #dcfce7;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+
+        .input-field {
+            flex: 1; border: none; outline: none;
+            padding: 8px 0; font-size: 16px; font-weight: 700;
+            background: transparent; color: #1e293b;
+        }
+
+        .operator-display {
+            width: 34px; height: 34px;
+            min-width: 34px; min-height: 34px;
+            display: flex; align-items: center; justify-content: center;
+            background: white; 
+            border-radius: 50%;
+            border: 1.5px solid #007d3d;
+            overflow: hidden;
+            margin-left: 5px;
+        }
+
+        .operator-display img {
+            width: 100%; height: 100%; 
+            padding: 3px; object-fit: contain;
+            display: none;
+        }
+
+        .operator-display i { color: #007d3d; font-size: 14px; }
+
+        .type-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .type-btn {
+            flex: 1;
+            padding: 10px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 700;
+            border: 1.5px solid #f1f5f9;
+            background: #f8fafc;
+            color: #64748b;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .type-btn.active {
+            border-color: #007d3d;
+            background: #f0fdf4;
+            color: #007d3d;
+        }
+
+        .amount-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 8px; margin-top: 5px;
+        }
+        .amt-btn {
+            background: #f1f5f9; padding: 8px 5px; border-radius: 10px;
+            text-align: center; font-size: 12px; font-weight: 800;
+            color: #475569; cursor: pointer;
+        }
+        .amt-btn:active { background: #007d3d; color: white; }
+
+        .pin-box {
+            width: 100%;
+            background: white; border: 1.5px solid #007d3d;
+            border-radius: 15px; padding: 12px; margin-top: 10px;
+            transition: all 0.3s ease;
+            scroll-margin-top: 100px;
+        }
+
+        .submit-btn-circle {
+            background: #007d3d; 
+            color: white; 
+            width: 70px; 
+            height: 70px; 
+            border-radius: 50%; 
+            margin-top: 30px;
+            margin-bottom: 30px;
+            font-weight: 800; 
+            font-size: 14px; 
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 20px rgba(0, 125, 61, 0.3);
+            cursor: pointer;
+            transition: transform 0.2s;
+            position: relative;
+        }
+
+        .pulse-active {
+            animation: pulse-animation 0.5s ease-out;
+        }
+
+        @keyframes pulse-animation {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 125, 61, 0.7); }
+            50% { transform: scale(1.1); box-shadow: 0 0 0 15px rgba(0, 125, 61, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 125, 61, 0); }
+        }
+
+        #kb-container {
+            position: fixed; bottom: -100%; left: 0; width: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(15px);
+            border-top-left-radius: 30px; border-top-right-radius: 30px;
+            padding: 12px 15px 20px 15px; z-index: 1000;
+            transition: bottom 0.4s cubic-bezier(0.17, 0.84, 0.44, 1);
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.4);
+        }
+
+        #kb-container.active { bottom: 0; }
+
+        .kb-key {
+            background: rgba(255, 255, 255, 0.12);
+            color: white; border: none; padding: 10px;
+            border-radius: 12px; font-size: 18px; font-weight: 700;
+            display: flex; align-items: center; justify-content: center;
+            height: 48px;
+        }
+
+        .kb-key:active { background: rgba(255, 255, 255, 0.3); transform: scale(0.92); }
+        .kb-key.del { color: #f43f5e; font-size: 16px; }
+        .kb-key.done { background: #007d3d; font-size: 13px; font-weight: 800; letter-spacing: 0.5px; }
+
+    </style>
+</head>
+<body>
+
+<div class="app-shell" id="appShell">
+    <div class="header" id="appHeader">
+        <a href="home.html" class="text-white text-xl"><i class="fas fa-chevron-left"></i></a>
+        <h1 class="text-base font-bold">Mobile Recharge</h1>
+    </div>
+
+    <div class="container">
+        <div class="input-card">
+            <p class="text-[10px] font-black text-slate-400 mb-2 ml-1">RECHARGE NUMBER</p>
+            <div class="input-wrapper">
+                <div class="icon-box">
+                    <i class="fas fa-phone-alt text-green-700 text-xs"></i>
+                </div>
+                <input type="tel" id="mobileNumber" class="input-field" placeholder="01XXXXXXXXX" maxlength="11">
+                <div class="operator-display" id="opBox">
+                    <i class="fas fa-sim-card" id="defaultIcon"></i>
+                    <img src="" id="opLogo" alt="operator">
+                </div>
+            </div>
+
+            <p class="text-[10px] font-black text-slate-400 mb-2 ml-1">RECHARGE TYPE</p>
+            <div class="type-selector">
+                <div class="type-btn active" onclick="setType(this, 'Prepaid')">Prepaid</div>
+                <div class="type-btn" onclick="setType(this, 'Postpaid')">Postpaid</div>
+            </div>
+
+            <p class="text-[10px] font-black text-slate-400 mb-2 mt-2 ml-1">AMOUNT (৳)</p>
+            <div class="input-wrapper" id="amtWrapper">
+                <div class="icon-box">
+                    <span class="text-green-700 font-bold text-sm">৳</span>
+                </div>
+                <input type="number" id="amount" class="input-field" placeholder="0.00" inputmode="decimal">
+            </div>
+            
+            <div class="amount-grid">
+                <div class="amt-btn" onclick="setAmt(20)">৳20</div>
+                <div class="amt-btn" onclick="setAmt(50)">৳50</div>
+                <div class="amt-btn" onclick="setAmt(100)">৳100</div>
+                <div class="amt-btn" onclick="setAmt(200)">৳200</div>
+            </div>
+        </div>
+
+        <div class="pin-box" id="pinBoxArea">
+            <p class="text-[10px] font-black text-green-800 mb-2 text-center uppercase tracking-wider">Secure Account PIN</p>
+            <input type="password" id="pin" class="w-full bg-slate-50 border-none rounded-lg p-2 text-center text-xl tracking-[10px] outline-none font-bold" placeholder="****" readonly>
+        </div>
+
+        <button class="submit-btn-circle" id="nextBtn" onclick="handleRecharge()">
+            Next
+        </button>
+    </div>
+
+    <div id="kb-container">
+        <button class="kb-key" onclick="vKey('1')">1</button>
+        <button class="kb-key" onclick="vKey('2')">2</button>
+        <button class="kb-key" onclick="vKey('3')">3</button>
+        <button class="kb-key" onclick="vKey('4')">4</button>
+        <button class="kb-key" onclick="vKey('5')">5</button>
+        <button class="kb-key" onclick="vKey('6')">6</button>
+        <button class="kb-key" onclick="vKey('7')">7</button>
+        <button class="kb-key" onclick="vKey('8')">8</button>
+        <button class="kb-key" onclick="vKey('9')">9</button>
+        <button class="kb-key del" onclick="vKey('del')"><i class="fas fa-backspace"></i></button>
+        <button class="kb-key" onclick="vKey('0')">0</button>
+        <button class="kb-key done" onclick="closeKb()">DONE</button>
+    </div>
+</div>
+
+<script>
+    const mobileInput = document.getElementById('mobileNumber');
+    const amountInput = document.getElementById('amount');
+    const amtWrapper = document.getElementById('amtWrapper');
+    const opLogo = document.getElementById('opLogo');
+    const defaultIcon = document.getElementById('defaultIcon');
+    const pinInput = document.getElementById('pin');
+    const kb = document.getElementById('kb-container');
+    const pinBoxArea = document.getElementById('pinBoxArea');
+    const nextBtn = document.getElementById('nextBtn');
+    const appShell = document.getElementById('appShell');
+    let selectedType = "Prepaid";
+
+    function setType(element, type) {
+        document.querySelectorAll('.type-btn').forEach(btn => btn.classList.remove('active'));
+        element.classList.add('active');
+        selectedType = type;
+    }
+
+    function openKb() {
+        kb.classList.add('active');
+        appShell.classList.add('kb-open');
+        setTimeout(() => {
+            pinBoxArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 300);
+    }
+
+    function closeKb() {
+        kb.classList.remove('active');
+        appShell.classList.remove('kb-open');
+        // পিনবক্স থেকে বের হলে স্ক্রল আবার স্বাভাবিক (উপরে) হয়ে যাবে
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    amountInput.addEventListener('focus', () => {
+        setTimeout(() => {
+            amtWrapper.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 300);
+        closeKb();
+    });
+
+    pinInput.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openKb();
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!kb.contains(e.target) && e.target !== pinInput) {
+            closeKb();
+        }
+    });
+
+    mobileInput.addEventListener('focus', closeKb);
+
+    amountInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            this.blur();
+            openKb();
+        }
+    });
+
+    function vKey(val) {
+        if (val === 'del') {
+            pinInput.value = pinInput.value.slice(0, -1);
+        } else {
+            if (pinInput.value.length < 4) {
+                pinInput.value += val;
+            }
+        }
+        
+        if (pinInput.value.length === 4) {
+            setTimeout(closeKb, 300);
+        }
+    }
+
+    mobileInput.addEventListener('input', function() {
+        const val = this.value;
+        if(val.length >= 3) {
+            const prefix = val.substring(0, 3);
+            let logoSrc = "";
+            if(prefix === "017" || prefix === "013") logoSrc = "gp.png";
+            else if(prefix === "018") logoSrc = "robi.png";
+            else if(prefix === "016") logoSrc = "ar.png";
+            else if(prefix === "019" || prefix === "014") logoSrc = "bl.png";
+            else if(prefix === "015") logoSrc = "tl.png";
+            else if(prefix === "012") logoSrc = "sk.png";
+
+            if(logoSrc !== "") {
+                opLogo.src = logoSrc;
+                opLogo.style.display = "block";
+                defaultIcon.style.display = "none";
+            } else { resetOp(); }
+        } else { resetOp(); }
+    });
+
+    function resetOp() {
+        opLogo.style.display = "none";
+        defaultIcon.style.display = "block";
+    }
+
+    function setAmt(val) {
+        amountInput.value = val;
+        setTimeout(openKb, 500);
+    }
+
+    function handleRecharge() {
+        const num = mobileInput.value;
+        const amt = amountInput.value;
+        const pin = pinInput.value;
+
+        if(num.length < 11 || amt < 10 || pin.length < 4) {
+            alert("সাজ্জাদ, সব তথ্য সঠিকভাবে দাও!");
+        } else {
+            nextBtn.classList.add('pulse-active');
+            setTimeout(() => {
+                window.location.href = "recharge-tap.html";
+            }, 500);
+        }
+    }
+</script>
+
+</body>
+</html>

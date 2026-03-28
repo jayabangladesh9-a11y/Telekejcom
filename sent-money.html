@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#007d3d">
+    <title>Send Money - Bondhu Telecom</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0; padding: 0; box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #f1f5f9;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 450px;
+            background-color: #fff;
+            height: 100vh;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+        }
+
+        /* Slide Animations */
+        .slide-left { transform: translateX(-100%); opacity: 0; }
+        .slide-right { transform: translateX(100%); opacity: 0; }
+
+        .header-banner {
+            background: linear-gradient(rgba(0, 125, 61, 0.8), rgba(0, 90, 44, 0.9)), url('1.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 200px;
+            padding: 20px;
+            color: white;
+            border-bottom-left-radius: 40px;
+            border-bottom-right-radius: 40px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 20px;
+            color: white;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .header-banner i.main-icon {
+            font-size: 45px;
+            margin-bottom: 10px;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .header-banner h1 {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .content-section {
+            padding: 0 20px;
+            margin-top: -40px;
+            flex: 1;
+        }
+
+        .input-card {
+            background: white;
+            padding: 25px 20px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border: 1px solid #f1f5f9;
+        }
+
+        .input-label {
+            font-size: 13px;
+            font-weight: 700;
+            color: #64748b;
+            margin-bottom: 12px;
+            display: block;
+            text-transform: uppercase;
+        }
+
+        .custom-input-group {
+            display: flex;
+            align-items: center;
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 5px 15px;
+            transition: 0.3s;
+        }
+
+        .custom-input-group.active-focus {
+            border-color: #007d3d;
+            background: white;
+            box-shadow: 0 0 15px rgba(0, 125, 61, 0.1);
+        }
+
+        .custom-input-group i {
+            color: #007d3d;
+            font-size: 18px;
+            margin-right: 12px;
+        }
+
+        .custom-input-group input {
+            border: none;
+            outline: none;
+            background: transparent;
+            flex: 1;
+            padding: 12px 0;
+            font-size: 18px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .btn-container {
+            padding: 20px;
+            background: white;
+        }
+
+        .next-button {
+            background: #e2e8f0;
+            color: #94a3b8;
+            width: 100%;
+            padding: 16px;
+            border-radius: 20px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 16px;
+            display: block;
+            transition: 0.3s;
+            pointer-events: none;
+            border: none;
+        }
+
+        .next-button.active {
+            background: linear-gradient(135deg, #007d3d 0%, #00a350 100%);
+            color: white;
+            pointer-events: auto;
+            box-shadow: 0 5px 15px rgba(0, 125, 61, 0.25);
+        }
+
+        /* Pulse Animation */
+        @keyframes pulse-effect {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.95); }
+            100% { transform: scale(1); }
+        }
+
+        .pulse { animation: pulse-effect 0.4s ease-in-out; }
+
+        .hint-text {
+            text-align: center;
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 15px;
+        }
+
+        @media (max-width: 480px) {
+            .main-container { max-width: 100%; height: 100vh; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-container" id="app">
+    <div class="header-banner">
+        <i class="fas fa-arrow-left back-btn" onclick="goBack()"></i>
+        <i class="fas fa-paper-plane main-icon"></i>
+        <h1>Send Money</h1>
+        <p class="text-xs opacity-80 mt-1">Send money easily to your loved ones</p>
+    </div>
+
+    <div class="content-section">
+        <div class="input-card">
+            <label class="input-label">Enter your number</label>
+            <div class="custom-input-group" id="inputBox">
+                <i class="fas fa-user-plus"></i>
+                <input type="number" id="phoneInput" placeholder="01XXX XXXXXX" oninput="validateInput(this)" onfocus="toggleFocus(true)" onblur="toggleFocus(false)">
+            </div>
+            <p class="hint-text">Please enter the correct 11-digit number</p>
+        </div>
+    </div>
+
+    <div class="btn-container">
+        <button class="next-button" id="nextBtn" onclick="submitForm()">Next Step</button>
+    </div>
+</div>
+
+<script>
+    // ১১ ডিজিটের বেশি ইনপুট নিবে না
+    function validateInput(input) {
+        if (input.value.length > 11) {
+            input.value = input.value.slice(0, 11);
+        }
+
+        const btn = document.getElementById('nextBtn');
+        if (input.value.length === 11) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    }
+
+    function toggleFocus(isFocused) {
+        const box = document.getElementById('inputBox');
+        if (isFocused) box.classList.add('active-focus');
+        else box.classList.remove('active-focus');
+    }
+
+    // ব্যাক বাটনের স্লাইড অ্যানিমেশন
+    function goBack() {
+        const app = document.getElementById('app');
+        app.classList.add('slide-right');
+        setTimeout(() => {
+            window.location.href = 'home.html';
+        }, 400);
+    }
+
+    // নেক্সট বাটনের পালস এবং স্লাইড অ্যানিমেশন
+    function submitForm() {
+        const btn = document.getElementById('nextBtn');
+        const app = document.getElementById('app');
+        
+        if (btn.classList.contains('active')) {
+            btn.classList.add('pulse');
+            
+            setTimeout(() => {
+                app.classList.add('slide-left');
+                setTimeout(() => {
+                    window.location.href = 'mony.html';
+                }, 400);
+            }, 300);
+        }
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#007d3d">
+    <title>Success - Bondhu Telecom</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0; padding: 0; box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #f1f5f9; 
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 450px;
+            background-color: #fff;
+            height: auto;
+            border-bottom-left-radius: 25px;
+            border-bottom-right-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        }
+
+        /* Header with 1.jpg Background */
+        .success-header {
+            background: linear-gradient(rgba(0, 125, 61, 0.85), rgba(0, 90, 44, 0.85)), url('1.jpg');
+            background-size: cover;
+            background-position: center;
+            padding: 20px 15px 40px;
+            text-align: center;
+            color: white;
+            border-bottom-left-radius: 25px;
+            border-bottom-right-radius: 25px;
+            position: relative;
+        }
+
+        .success-circle {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 10px;
+        }
+
+        .success-circle i {
+            font-size: 28px;
+            color: #007d3d;
+        }
+
+        .success-header h2 {
+            font-size: 17px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .success-header p {
+            font-size: 11px;
+            opacity: 0.9;
+        }
+
+        /* Compact Transaction Card */
+        .details-card {
+            background: white;
+            margin: -25px 12px 12px;
+            padding: 15px 12px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            z-index: 10;
+            border: 1px solid #f1f5f9;
+            position: relative;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dashed #f1f5f9;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .label {
+            font-size: 11px;
+            color: #64748b;
+            font-weight: 600;
+        }
+
+        .value {
+            font-size: 11px;
+            color: #1e293b;
+            font-weight: 700;
+        }
+
+        /* Compact Action Buttons */
+        .action-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            padding: 0 12px;
+            margin-bottom: 15px;
+        }
+
+        .action-btn {
+            background: #f1f9f4;
+            color: #007d3d;
+            padding: 10px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: 0.2s;
+        }
+
+        .action-btn:active {
+            transform: scale(0.95);
+            background: #007d3d;
+            color: white;
+        }
+
+        /* Compact Home Button */
+        .home-btn {
+            background: linear-gradient(135deg, #007d3d 0%, #00a350 100%);
+            color: white;
+            width: calc(100% - 24px);
+            margin: 0 12px 20px;
+            padding: 14px;
+            border-radius: 15px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 14px;
+            text-decoration: none;
+            display: block;
+            box-shadow: 0 4px 12px rgba(0, 125, 61, 0.2);
+        }
+
+        @media screen and (max-width: 480px) {
+            .main-container {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+    <div class="success-header">
+        <div class="success-circle">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <h2>Transaction Successful</h2>
+        <p>Your request has been processed</p>
+    </div>
+
+    <div class="details-card">
+        <div class="detail-row">
+            <span class="label">Recipient</span>
+            <span class="value">01781-145086</span>
+        </div>
+        <div class="detail-row">
+            <span class="label">Transaction ID</span>
+            <span class="value text-[#007d3d]">71IHIW6R</span>
+        </div>
+        <div class="detail-row">
+            <span class="label">Amount</span>
+            <span class="value">৳ 12,180.00</span>
+        </div>
+        <div class="detail-row">
+            <span class="label">Charge</span>
+            <span class="value">৳ 0.00</span>
+        </div>
+        <div class="detail-row">
+            <span class="label">Time</span>
+            <span class="value">25 March, 2026, 06:12 PM</span>
+        </div>
+    </div>
+
+    <div class="action-grid">
+        <a href="tel:01781145086" class="action-btn">
+            <i class="fas fa-phone-alt"></i> Call
+        </a>
+        <a href="sms:01781145086" class="action-btn">
+            <i class="fas fa-comment-alt"></i> Message
+        </a>
+    </div>
+
+    <a href="home.html" class="home-btn">Back to Home</a>
+</div>
+
+</body>
+</html>

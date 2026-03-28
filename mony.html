@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#007d3d">
+    <title>Amount - Bondhu Telecom</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0; padding: 0; box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #f1f5f9;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 420px;
+            background-color: #fff;
+            height: 100vh;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+        }
+
+        .slide-left { transform: translateX(-100%); opacity: 0; }
+        .slide-right { transform: translateX(100%); opacity: 0; }
+
+        .header-banner {
+            background: linear-gradient(rgba(0, 125, 61, 0.8), rgba(0, 90, 44, 0.9)), url('1.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 150px;
+            padding: 15px 20px;
+            color: white;
+            border-bottom-left-radius: 35px;
+            border-bottom-right-radius: 35px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            font-size: 18px;
+            color: white;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        header h1 {
+            text-align: center;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .recipient-box {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 10px 15px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .avatar {
+            width: 35px; height: 35px;
+            background: white;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin-right: 12px;
+            color: #007d3d;
+            font-size: 14px;
+        }
+
+        .content-section {
+            padding: 0 18px;
+            margin-top: -15px;
+            flex: 1;
+        }
+
+        .amount-card {
+            background: white;
+            padding: 25px 18px;
+            border-radius: 22px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+            border: 1px solid #f1f5f9;
+            text-align: center;
+        }
+
+        .balance-info {
+            display: flex;
+            justify-content: space-between;
+            background: #fff;
+            padding: 14px 22px;
+            border-radius: 50px;
+            margin: 0 0 25px 0;
+            font-size: 12px;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(0, 125, 61, 0.08);
+            border: 1px solid rgba(0, 125, 61, 0.1);
+        }
+
+        .amount-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #f1f5f9;
+            border-radius: 18px;
+            padding: 8px;
+            transition: 0.3s;
+            background: #f8fafc;
+        }
+
+        .input-wrapper.active-focus { border-color: #007d3d; background: #fff; box-shadow: 0 0 0 4px rgba(0, 125, 61, 0.05); }
+
+        .currency { font-size: 22px; font-weight: 700; color: #007d3d; margin-right: 8px; }
+
+        .input-wrapper input {
+            border: none; outline: none;
+            width: 130px; font-size: 26px;
+            font-weight: 700; color: #1e293b;
+            background: transparent;
+        }
+
+        .charge-card {
+            margin-top: 18px;
+            background: #f8fafc;
+            padding: 12px 15px;
+            border-radius: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-align: left;
+        }
+
+        .switch { position: relative; width: 40px; height: 22px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #cbd5e1; transition: .4s; border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute; content: ""; height: 16px; width: 16px;
+            left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%;
+        }
+        input:checked + .slider { background-color: #007d3d; }
+        input:checked + .slider:before { transform: translateX(18px); }
+
+        .btn-container { padding: 15px 20px 25px 20px; background: white; }
+        .next-btn {
+            background: #e2e8f0; color: #94a3b8;
+            width: 100%; padding: 14px; border-radius: 18px;
+            text-align: center; font-weight: 700; font-size: 15px;
+            display: block; transition: 0.3s; pointer-events: none;
+            border: none;
+        }
+        .next-btn.active {
+            background: linear-gradient(135deg, #007d3d 0%, #00a350 100%);
+            color: white; pointer-events: auto;
+            box-shadow: 0 5px 15px rgba(0, 125, 61, 0.25);
+        }
+
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(0.97); } 100% { transform: scale(1); } }
+        .pulse { animation: pulse 0.4s ease; }
+
+        @media (max-width: 480px) { 
+            .main-container { max-width: 100%; }
+            .header-banner { height: 140px; }
+            .amount-card { padding: 20px 15px; }
+            .content-section { margin-top: -10px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-container" id="app">
+    <div class="header-banner">
+        <i class="fas fa-arrow-left back-btn" onclick="goBack()"></i>
+        <header><h1>Send Money</h1></header>
+        <div class="recipient-box">
+            <div class="avatar"><i class="fas fa-user"></i></div>
+            <div>
+                <p class="text-[9px] opacity-80">Recipient</p>
+                <h3 class="text-xs font-bold">01845-123092</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-section">
+        <div class="amount-card">
+            <div class="balance-info">
+                <span class="text-slate-500">Available Balance</span>
+                <span class="text-[#007d3d]">৳ 2.04</span>
+            </div>
+
+            <span class="amount-label">Enter Amount</span>
+            <div class="input-wrapper" id="inputBox">
+                <span class="currency">৳</span>
+                <input type="number" id="amountInput" placeholder="0.00" oninput="validateAmount(this)" onfocus="toggleFocus(true)" onblur="toggleFocus(false)">
+            </div>
+            <p id="errorMsg" class="text-[10px] text-red-500 mt-2 hidden">Insufficient Balance!</p>
+
+            <div class="charge-card">
+                <div>
+                    <h4 class="text-xs font-bold text-slate-700">Add Charge</h4>
+                    <p class="text-[9px] text-slate-500">Include cash out charge</p>
+                </div>
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="btn-container">
+        <button class="next-btn" id="nextBtn" onclick="submitAmount()">Next Step</button>
+    </div>
+</div>
+
+<script>
+    function toggleFocus(isFocused) {
+        const box = document.getElementById('inputBox');
+        if (isFocused) box.classList.add('active-focus');
+        else box.classList.remove('active-focus');
+    }
+
+    function validateAmount(input) {
+        const btn = document.getElementById('nextBtn');
+        const amount = parseFloat(input.value);
+        
+        if (amount > 0 && amount <= 2.04) {
+            btn.classList.add('active');
+            document.getElementById('errorMsg').classList.add('hidden');
+        } else if (amount > 2.04) {
+            btn.classList.remove('active');
+            document.getElementById('errorMsg').classList.remove('hidden');
+        } else {
+            btn.classList.remove('active');
+            document.getElementById('errorMsg').classList.add('hidden');
+        }
+    }
+
+    function goBack() {
+        const app = document.getElementById('app');
+        app.classList.add('slide-right');
+        setTimeout(() => { window.location.href = 'mony.html'; }, 400);
+    }
+
+    function submitAmount() {
+        const btn = document.getElementById('nextBtn');
+        const app = document.getElementById('app');
+        if (btn.classList.contains('active')) {
+            btn.classList.add('pulse');
+            setTimeout(() => {
+                app.classList.add('slide-left');
+                setTimeout(() => { window.location.href = 'pin.html'; }, 400);
+            }, 300);
+        }
+    }
+</script>
+
+</body>
+</html>

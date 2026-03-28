@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Notifications</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            padding: 12px;
+        }
+
+        /* Top Bar Style from Image */
+        .page-header {
+            background: #007d3d;
+            color: white;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+        }
+
+        .page-header i { font-size: 20px; cursor: pointer; margin-right: 20px; }
+        .page-header h2 { font-size: 18px; font-weight: 600; flex: 1; text-align: center; margin-right: 35px; }
+
+        .container { margin-top: 60px; display: flex; flex-direction: column; gap: 12px; }
+
+        /* Notification Card */
+        .notif-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* Card Header with Icon/Image and Time */
+        .notif-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .head-left { display: flex; align-items: center; gap: 12px; }
+
+        .icon-circle {
+            width: 45px; height: 45px;
+            background: #007d3d; color: white;
+            border-radius: 50%;
+            display: flex; align-items: center;
+            justify-content: center; font-size: 20px;
+        }
+
+        .notif-title { font-size: 15px; font-weight: 700; color: #444; }
+        .notif-time { font-size: 11px; color: #999; }
+
+        /* Content Text */
+        .notif-body {
+            font-size: 12.5px;
+            color: #666;
+            line-height: 1.6;
+            text-align: justify;
+        }
+
+        /* Banner Image Style */
+        .notif-banner {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .highlight-text { color: #e21d25; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="page-header">
+        <i class="fas fa-arrow-left" onclick="window.parent.showHome()"></i>
+        <h2>Notifications</h2>
+    </div>
+
+    <div class="container">
+        
+        <div class="notif-card">
+            <img src="https://via.placeholder.com/600x250/007d3d/ffffff?text=Offer+Banner" class="notif-banner" alt="Offer">
+            <div class="notif-head">
+                <div class="head-left">
+                    <span class="notif-title">ফেরার পথে ব্যাংক...</span>
+                </div>
+                <span class="notif-time">Today, 10:51 AM</span>
+            </div>
+            <p class="notif-body">
+                আপনার জন্য দু'টি অফার! ব্যাংক থেকে নগদ ইসলামিক-এ অ্যাড মানি করলে উপহার হিসেবে পাবেন সর্বমোট <span class="highlight-text">৳১২০ ইনস্ট্যান্ট বোনাস</span> ১ ৫,৫৫৫ অ্যাড মানিতে ৫০ ইনস্ট্যান্ট।
+            </p>
+        </div>
+
+        <div class="notif-card">
+            <div class="notif-head">
+                <div class="head-left">
+                    <div class="icon-circle"><i class="fas fa-bullhorn"></i></div>
+                    <span class="notif-title">⚡রিচার্জে ৮৪০ পর্যন্ত ক্যা...</span>
+                </div>
+                <span class="notif-time">Today, 09:35 AM</span>
+            </div>
+            <p class="notif-body">
+                নগদ থেকে রবি ৮২৮৯ রিচার্জে ⚡ ৪০০ মিনিট 💰 ক্যাশব্যাক ৮, মেয়াদ ৩০ দিন ৮৫০৯ রিচার্জে ⚡ ৮০০ মিনিট 💰 ক্যাশব্যাক ৮৪০, মেয়াদ ৩০ দিন ৮৭৯৯।
+            </p>
+        </div>
+
+        <div class="notif-card">
+            <div class="notif-head">
+                <div class="head-left">
+                    <div class="icon-circle"><i class="fas fa-bullhorn"></i></div>
+                    <span class="notif-title">৳৩০০ বোনাস অ্যাড মা...</span>
+                </div>
+                <span class="notif-time">Yesterday, 06:01 PM</span>
+            </div>
+            <p class="notif-body">
+                নির্দিষ্ট ব্যাংক থেকে নগদ-এ ৮২,২০০ অ্যাড মানি করলেই - 👉 <span class="highlight-text">৳৩০০ ইনস্ট্যান্ট বোনাস</span> (সর্বোচ্চ ১ বার) 🗓 অফারটি চলবে ৩১ মার্চ, ২০২৬ পর্যন্ত।
+            </p>
+        </div>
+
+    </div>
+
+</body>
+</html>

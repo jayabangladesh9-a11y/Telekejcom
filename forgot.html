@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Forgot PIN - Bondhu Telecom</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #f8fafc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .forgot-container {
+            width: 100%;
+            max-width: 450px;
+            background-color: #fff;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+            will-change: transform, opacity;
+            z-index: 1;
+        }
+
+        .slide-out {
+            transform: translateX(-100%);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .forgot-header {
+            background: linear-gradient(rgba(6, 117, 45, 0.6), rgba(6, 117, 45, 0.6)), url('1.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 200px;
+            padding: 20px;
+            color: white;
+            text-align: center;
+            border-bottom-left-radius: 40px;
+            border-bottom-right-radius: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .app-logo {
+            width: 65px;
+            height: 65px;
+            background: white;
+            border-radius: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 12px;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .app-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .forgot-header h2 {
+            font-size: 20px;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .forgot-card {
+            background: white;
+            margin: -35px 25px 0;
+            padding: 25px 20px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+            z-index: 10;
+            flex-grow: 1;
+        }
+
+        /* Tab Switch Styling */
+        .tab-switch {
+            display: flex;
+            background: #f1f5f9;
+            border-radius: 50px;
+            margin-bottom: 25px;
+            padding: 5px;
+            position: relative;
+        }
+
+        .tab-item {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            color: #666;
+            cursor: pointer;
+            z-index: 2;
+            transition: color 0.3s;
+        }
+
+        .tab-item.active {
+            color: #fff;
+        }
+
+        .tab-indicator {
+            position: absolute;
+            height: calc(100% - 10px);
+            width: calc(50% - 5px);
+            background: #06752d;
+            border-radius: 50px;
+            top: 5px;
+            left: 5px;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1;
+        }
+
+        .email-active .tab-indicator {
+            transform: translateX(100%);
+        }
+
+        .instruction-text {
+            text-align: center;
+            font-size: 13px;
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            font-weight: 500;
+            min-height: 40px;
+        }
+
+        .input-section {
+            display: none;
+        }
+
+        .input-section.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #666;
+            margin-left: 5px;
+            margin-bottom: 8px;
+            display: block;
+            text-transform: uppercase;
+        }
+
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+            background: #f1f5f9;
+            border: 2px solid transparent;
+            border-radius: 15px;
+            padding: 8px 12px;
+            transition: all 0.3s;
+        }
+
+        .input-wrapper:focus-within {
+            background: #fff;
+            border-color: #06752d;
+        }
+
+        .icon-circle {
+            width: 36px;
+            height: 36px;
+            background: #06752d;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        .icon-circle i {
+            color: white;
+            font-size: 14px;
+        }
+
+        .input-wrapper input {
+            border: none;
+            outline: none;
+            background: transparent;
+            flex: 1;
+            padding: 10px 0;
+            font-size: 16px;
+            color: #333;
+            width: 100%;
+        }
+
+        @keyframes pulse-click {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.92); }
+            100% { transform: scale(1); }
+        }
+
+        .pulse-effect {
+            animation: pulse-click 0.3s ease-out;
+        }
+
+        .reset-btn {
+            background: linear-gradient(135deg, #06752d 0%, #0a9139 100%);
+            color: white;
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 15px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 10px;
+            box-shadow: 0 5px 15px rgba(6, 117, 45, 0.2);
+            transition: all 0.3s;
+        }
+
+        .footer-links {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 14px;
+        }
+
+        .footer-links a {
+            color: #06752d;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .copyright-text {
+            text-align: center;
+            font-size: 12px;
+            color: #888;
+            margin-top: auto;
+            padding: 20px 10px;
+            font-weight: 500;
+        }
+
+        @media screen and (max-width: 480px) {
+            .forgot-container { max-width: 100%; height: 100vh; border-radius: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="forgot-container" id="forgotApp">
+        <div class="forgot-header">
+            <div class="app-logo">
+                <img src="3.png" alt="Logo">
+            </div>
+            <h2>Forgot PIN?</h2>
+            <p style="font-size: 11px; opacity: 0.9;">Recover your account access</p>
+        </div>
+
+        <div class="forgot-card">
+            <div class="tab-switch" id="tabSwitch">
+                <div class="tab-indicator"></div>
+                <div class="tab-item active" onclick="switchTab('mobile')">Mobile</div>
+                <div class="tab-item" onclick="switchTab('email')">Email</div>
+            </div>
+
+            <p class="instruction-text" id="instructionText">
+                আপনার নিবন্ধিত মোবাইল নম্বরটি নিচে দিন। আমরা আপনার পিন রিসেট করার জন্য একটি ওটিপি পাঠাবো।
+            </p>
+
+            <div id="mobileSection" class="input-section active">
+                <div class="input-group">
+                    <label>Mobile Number</label>
+                    <div class="input-wrapper">
+                        <div class="icon-circle">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <input type="number" id="mobileInput" placeholder="Enter mobile number">
+                    </div>
+                </div>
+            </div>
+
+            <div id="emailSection" class="input-section">
+                <div class="input-group">
+                    <label>Email Address</label>
+                    <div class="input-wrapper">
+                        <div class="icon-circle">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <input type="email" id="emailInput" placeholder="Enter email address">
+                    </div>
+                </div>
+            </div>
+
+            <button class="reset-btn" onclick="validateAndNavigate(this)">Send Reset Code</button>
+
+            <div class="footer-links">
+                <p>Remember your PIN? <a onclick="animateAndNavigate(this, 'index.html')">Login Now</a></p>
+            </div>
+        </div>
+
+        <div class="copyright-text">
+            © 2026 Bondhu Telecom | All Rights Reserved
+        </div>
+    </div>
+
+    <script>
+        let currentTab = 'mobile';
+
+        function switchTab(tab) {
+            const tabSwitch = document.getElementById('tabSwitch');
+            const items = document.querySelectorAll('.tab-item');
+            const mobileSection = document.getElementById('mobileSection');
+            const emailSection = document.getElementById('emailSection');
+            const instructionText = document.getElementById('instructionText');
+
+            currentTab = tab;
+
+            if (tab === 'mobile') {
+                tabSwitch.classList.remove('email-active');
+                items[0].classList.add('active');
+                items[1].classList.remove('active');
+                mobileSection.classList.add('active');
+                emailSection.classList.remove('active');
+                instructionText.innerText = "আপনার নিবন্ধিত মোবাইল নম্বরটি নিচে দিন। আমরা আপনার পিন রিসেট করার জন্য একটি ওটিপি পাঠাবো।";
+            } else {
+                tabSwitch.classList.add('email-active');
+                items[0].classList.remove('active');
+                items[1].classList.add('active');
+                mobileSection.classList.remove('active');
+                emailSection.classList.add('active');
+                instructionText.innerText = "আপনার নিবন্ধিত ইমেইল এড্রেসটি নিচে দিন। আমরা পিন রিসেট করার লিংক পাঠাবো।";
+            }
+        }
+
+        function validateAndNavigate(element) {
+            if (currentTab === 'mobile') {
+                const mobile = document.getElementById('mobileInput').value;
+                if (mobile.length < 11) {
+                    alert('সঠিক মোবাইল নম্বরটি লিখুন!');
+                    return;
+                }
+            } else {
+                const email = document.getElementById('emailInput').value;
+                if (!email.includes('@')) {
+                    alert('সঠিক ইমেইল এড্রেসটি লিখুন!');
+                    return;
+                }
+            }
+            animateAndNavigate(element, 'otp.html');
+        }
+
+        function animateAndNavigate(element, targetPage) {
+            element.classList.add('pulse-effect');
+            setTimeout(() => {
+                element.classList.remove('pulse-effect');
+                const app = document.getElementById('forgotApp');
+                app.classList.add('slide-out');
+                setTimeout(() => {
+                    window.location.href = targetPage;
+                }, 500);
+            }, 300);
+        }
+    </script>
+</body>
+</html>

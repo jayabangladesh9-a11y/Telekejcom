@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Set New PIN - Bondhu Telecom</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #f8fafc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
+        }
+
+        .reset-container {
+            width: 100%;
+            max-width: 450px;
+            background-color: #fff;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .reset-header {
+            background: linear-gradient(rgba(6, 117, 45, 0.6), rgba(6, 117, 45, 0.6)), url('1.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 250px;
+            padding: 30px 20px;
+            color: white;
+            text-align: center;
+            border-bottom-left-radius: 40px;
+            border-bottom-right-radius: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .app-logo {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .app-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .reset-header h2 {
+            font-size: 22px;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .reset-header p {
+            font-size: 13px;
+            opacity: 0.95;
+            margin-top: 5px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .reset-card {
+            background: white;
+            margin: -40px 25px 0;
+            padding: 25px 20px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+            z-index: 10;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
+            margin-left: 5px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+            background: #f1f5f9;
+            border: 2px solid transparent;
+            border-radius: 15px;
+            padding: 0 12px;
+            height: 55px;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .input-wrapper.active {
+            background: #fff;
+            border-color: #06752d;
+        }
+
+        .icon-circle {
+            width: 35px;
+            height: 35px;
+            background: #06752d;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        .icon-circle i {
+            color: white;
+            font-size: 14px;
+        }
+
+        .input-wrapper input {
+            border: none;
+            outline: none;
+            background: transparent;
+            flex: 1;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 8px;
+            color: #333;
+            width: 100%;
+            pointer-events: none;
+            text-align: left;
+            padding-top: 0;
+            line-height: 55px;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper input::placeholder {
+            color: #cbd5e1;
+            font-size: 32px;
+            letter-spacing: 5px;
+            position: relative;
+            top: -5px;
+            display: inline-block;
+            line-height: normal;
+        }
+
+        .toggle-pin {
+            color: #94a3b8;
+            cursor: pointer;
+            padding: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+
+        .toggle-pin:active {
+            transform: scale(0.9);
+        }
+
+        .reset-btn {
+            background: linear-gradient(135deg, #06752d 0%, #0a9139 100%);
+            color: white;
+            width: calc(100% - 50px);
+            margin: 20px 25px;
+            padding: 15px;
+            border: none;
+            border-radius: 15px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(6, 117, 45, 0.2);
+            z-index: 5;
+        }
+
+        .bottom-info {
+            margin-top: auto;
+            text-align: center;
+            padding-bottom: 30px;
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        .keypad {
+            position: absolute;
+            bottom: -100%;
+            left: 0;
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            padding: 20px 20px 35px;
+            background: #1e293b;
+            border-top-left-radius: 40px;
+            border-top-right-radius: 40px;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.3);
+            transition: bottom 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 20;
+        }
+
+        .keypad.show {
+            bottom: 0;
+        }
+
+        .key {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 18px;
+            height: 55px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 22px;
+            font-weight: 700;
+            color: #ffffff;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .key:active {
+            background: #06752d;
+            transform: scale(0.95);
+        }
+
+        .key.action {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        @media screen and (max-height: 700px) {
+            .reset-header { height: 200px; padding: 20px; }
+            .app-logo { width: 60px; height: 60px; }
+            .reset-card { margin-top: -30px; }
+            .key { height: 50px; }
+        }
+    </style>
+</head>
+<body onclick="closeKeypad(event)">
+
+    <div class="reset-container" id="resetApp">
+        <div class="reset-header">
+            <div class="app-logo">
+                <img src="3.png" alt="Logo">
+            </div>
+            <h2>Bondhu Telecom</h2>
+            <p>Set your new secure account PIN</p>
+        </div>
+
+        <div class="reset-card" onclick="event.stopPropagation()">
+            <div class="input-group">
+                <label>New PIN Number</label>
+                <div class="input-wrapper" id="newPinWrapper" onclick="setActiveInput('newPin', this)">
+                    <div class="icon-circle">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <input type="password" id="newPin" placeholder="...." readonly>
+                    <div class="toggle-pin" onclick="toggleVisibility('newPin', this)">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Confirm PIN Number</label>
+                <div class="input-wrapper" id="confirmPinWrapper" onclick="setActiveInput('confirmPin', this)">
+                    <div class="icon-circle">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <input type="password" id="confirmPin" placeholder="...." readonly>
+                    <div class="toggle-pin" onclick="toggleVisibility('confirmPin', this)">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button class="reset-btn" onclick="submitPin()">Update PIN Now</button>
+
+        <div class="bottom-info">
+            &copy; 2026 Bondhu Telecom | All Rights Reserved
+        </div>
+
+        <div class="keypad" id="virtualKeypad" onclick="event.stopPropagation()">
+            <div class="key" onclick="pressKey('1')">1</div>
+            <div class="key" onclick="pressKey('2')">2</div>
+            <div class="key" onclick="pressKey('3')">3</div>
+            <div class="key" onclick="pressKey('4')">4</div>
+            <div class="key" onclick="pressKey('5')">5</div>
+            <div class="key" onclick="pressKey('6')">6</div>
+            <div class="key" onclick="pressKey('7')">7</div>
+            <div class="key" onclick="pressKey('8')">8</div>
+            <div class="key" onclick="pressKey('9')">9</div>
+            <div class="key action" onclick="clearAll()">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+            </div>
+            <div class="key" onclick="pressKey('0')">0</div>
+            <div class="key action" onclick="backspace()">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 4H8l-7 8 7 8h13a2 2 0 002-2V6a2 2 0 00-2-2zM18 9l-6 6M12 9l6 6"/></svg>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentInputId = '';
+
+        window.addEventListener('popstate', function() {
+            if (document.getElementById('virtualKeypad').classList.contains('show')) {
+                closeKeypad();
+                history.pushState(null, null, window.location.pathname);
+            }
+        });
+
+        function setActiveInput(id, element) {
+            currentInputId = id;
+            document.querySelectorAll('.input-wrapper').forEach(w => w.classList.remove('active'));
+            element.classList.add('active');
+            
+            const keypad = document.getElementById('virtualKeypad');
+            if (!keypad.classList.contains('show')) {
+                keypad.classList.add('show');
+                history.pushState(null, null, window.location.pathname);
+            }
+        }
+
+        function closeKeypad() {
+            const keypad = document.getElementById('virtualKeypad');
+            keypad.classList.remove('show');
+            document.querySelectorAll('.input-wrapper').forEach(w => w.classList.remove('active'));
+            currentInputId = '';
+        }
+
+        function toggleVisibility(inputId, element) {
+            event.stopPropagation();
+            const input = document.getElementById(inputId);
+            if (input.type === "password") {
+                input.type = "text";
+                element.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0112 19c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+            } else {
+                input.type = "password";
+                element.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+            }
+        }
+
+        function pressKey(num) {
+            if (!currentInputId) return;
+            const input = document.getElementById(currentInputId);
+            if (input.value.length < 4) {
+                input.value += num;
+            }
+
+            if (input.value.length === 4) {
+                if (currentInputId === 'newPin') {
+                    setTimeout(() => {
+                        setActiveInput('confirmPin', document.getElementById('confirmPinWrapper'));
+                    }, 300);
+                } else {
+                    setTimeout(closeKeypad, 300);
+                }
+            }
+        }
+
+        function backspace() {
+            if (!currentInputId) return;
+            const input = document.getElementById(currentInputId);
+            input.value = input.value.slice(0, -1);
+        }
+
+        function clearAll() {
+            document.getElementById('newPin').value = "";
+            document.getElementById('confirmPin').value = "";
+            setActiveInput('newPin', document.getElementById('newPinWrapper'));
+        }
+
+        function submitPin() {
+            const pin = document.getElementById('newPin').value;
+            const confirm = document.getElementById('confirmPin').value;
+            if (pin.length < 4 || confirm.length < 4) {
+                alert('সাজ্জাদ, ৪ সংখ্যার পিন টাইপ করো।');
+                return;
+            }
+            if (pin !== confirm) {
+                alert('সাজ্জাদ, পিন দুটি মিলছে না!');
+                return;
+            }
+            alert('অভিনন্দন সাজ্জাদ! পিন সফলভাবে আপডেট হয়েছে।');
+            window.location.href = 'index.html';
+        }
+
+        history.pushState(null, null, window.location.pathname);
+    </script>
+</body>
+</html>

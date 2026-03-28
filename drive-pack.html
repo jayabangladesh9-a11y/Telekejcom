@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#007d3d">
+    <title>Bondhu Telecom - Offer List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #f1f5f9;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .top-header {
+            background: linear-gradient(rgba(0, 125, 61, 0.8), rgba(0, 90, 44, 0.9)), url('1.jpg');
+            background-size: cover;
+            background-position: center;
+            padding: 12px 0px 18px;
+            color: white;
+            border-bottom-left-radius: 25px;
+            border-bottom-right-radius: 25px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+            padding: 0 20px;
+        }
+
+        .search-area {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            padding: 6px 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin: 0 20px 8px;
+        }
+
+        .search-area input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: white;
+            flex: 1;
+            font-size: 13px;
+            margin-left: 10px;
+        }
+
+        .search-area input::placeholder {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .search-area i {
+            color: white;
+            font-size: 13px;
+        }
+
+        .tabs-container, .validity-tabs {
+            display: flex;
+            overflow-x: auto;
+            gap: 8px;
+            padding: 0 20px 5px;
+            scroll-behavior: smooth;
+        }
+
+        .tabs-container::-webkit-scrollbar, .validity-tabs::-webkit-scrollbar { display: none; }
+
+        .tab, .v-tab {
+            white-space: nowrap;
+            font-size: 11px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.7);
+            padding: 4px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .tab.active, .v-tab.active {
+            color: white;
+            background: rgba(255, 255, 255, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .validity-tabs {
+            margin-top: 8px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 8px;
+        }
+
+        .main-content {
+            margin-top: 205px;
+            padding: 15px;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .offer-card {
+            background: white;
+            border-radius: 18px;
+            padding: 15px;
+            margin-bottom: 15px;
+            position: relative;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .save-tag {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: #FFC107;
+            color: #000;
+            font-size: 10px;
+            padding: 4px 10px;
+            border-bottom-left-radius: 12px;
+            border-top-right-radius: 18px;
+            font-weight: 800;
+            z-index: 10;
+            box-shadow: -2px 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .card-top {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .operator-icon {
+            width: 45px;
+            height: 45px;
+            background: #f8fafc;
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #eee;
+        }
+
+        .operator-icon img {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+        }
+
+        .details {
+            flex: 1;
+        }
+
+        .details h3 {
+            font-size: 14px;
+            color: #1e293b;
+            font-weight: 700;
+            line-height: 1.4;
+            margin-bottom: 4px;
+            padding-right: 85px;
+        }
+
+        .details .reg-price {
+            font-size: 11px;
+            color: #d32f2f;
+            font-weight: 600;
+            text-decoration: line-through;
+            margin-bottom: 2px;
+        }
+
+        .details .buy-price {
+            font-size: 13px;
+            color: #007d3d;
+            font-weight: 700;
+        }
+
+        .card-bottom {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px dashed #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .validity-info {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #007d3d;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .buy-now-btn {
+            background: #007d3d;
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 3px 8px rgba(0, 125, 61, 0.2);
+        }
+
+        .buy-now-btn:active {
+            transform: scale(0.95);
+        }
+
+        @media (max-width: 480px) {
+            .top-header { padding: 12px 0px 15px; }
+            .details h3 { font-size: 13px; padding-right: 80px; }
+            .main-content { margin-top: 195px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-header">
+        <div class="header-top">
+            <i class="fas fa-arrow-left" style="font-size: 16px;" onclick="window.history.back()"></i>
+            <h2 style="font-size: 17px; font-weight: 600;">Offer List</h2>
+        </div>
+        
+        <div class="search-area">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="Search your offer..." onkeyup="applyFilters()">
+        </div>
+
+        <div class="tabs-container">
+            <div class="tab active" onclick="filterByCategory('All', this)">All</div>
+            <div class="tab" onclick="filterByCategory('Minutes', this)">Minutes</div>
+            <div class="tab" onclick="filterByCategory('Internet', this)">Internet</div>
+            <div class="tab" onclick="filterByCategory('Bundles', this)">Bundles</div>
+            <div class="tab" onclick="filterByCategory('Call Rate', this)">Call Rate</div>
+        </div>
+
+        <div class="validity-tabs">
+            <div class="v-tab active" onclick="filterByValidity('all', this)">All Validity</div>
+            <div class="v-tab" onclick="filterByValidity('3', this)">3 Days</div>
+            <div class="v-tab" onclick="filterByValidity('7', this)">7 Days</div>
+            <div class="v-tab" onclick="filterByValidity('15', this)">15 Days</div>
+            <div class="v-tab" onclick="filterByValidity('30', this)">30 Days</div>
+        </div>
+    </div>
+
+    <div class="main-content" id="offerContainer">
+        
+        <div class="offer-card" data-category="Internet" data-validity="30">
+            <div class="save-tag">CASHBACK ৳50</div>
+            <div class="card-top">
+                <div class="operator-icon"><img src="robi.png" alt="robi"></div>
+                <div class="details">
+                    <h3>রবি ৩০ জিবি ইন্টারনেট প্যাক</h3>
+                    <div class="reg-price">Regular Price: ৳499</div>
+                    <div class="buy-price">Our Price: ৳449</div>
+                </div>
+            </div>
+            <div class="card-bottom">
+                <div class="validity-info"><i class="fas fa-calendar-alt"></i> Validity: 30 Days</div>
+                <button class="buy-now-btn" onclick="buyOffer('রবি ৩০ জিবি', 449)">Buy ৳449</button>
+            </div>
+        </div>
+
+        <div class="offer-card" data-category="Internet" data-validity="7">
+            <div class="save-tag">CASHBACK ৳10</div>
+            <div class="card-top">
+                <div class="operator-icon"><img src="robi.png" alt="robi"></div>
+                <div class="details">
+                    <h3>রবি ৫ জিবি ৭ দিন মেয়াদে</h3>
+                    <div class="reg-price">Regular Price: ৳114</div>
+                    <div class="buy-price">Our Price: ৳104</div>
+                </div>
+            </div>
+            <div class="card-bottom">
+                <div class="validity-info"><i class="fas fa-calendar-alt"></i> Validity: 7 Days</div>
+                <button class="buy-now-btn" onclick="buyOffer('রবি ৫ জিবি ৭ দিন', 104)">Buy ৳104</button>
+            </div>
+        </div>
+
+        <div class="offer-card" data-category="Minutes" data-validity="30">
+            <div class="save-tag">CASHBACK ৳40</div>
+            <div class="card-top">
+                <div class="operator-icon"><img src="robi.png" alt="robi"></div>
+                <div class="details">
+                    <h3>রবি ৫০০ মিনিট টকটাইম</h3>
+                    <div class="reg-price">Regular Price: ৳320</div>
+                    <div class="buy-price">Our Price: ৳280</div>
+                </div>
+            </div>
+            <div class="card-bottom">
+                <div class="validity-info"><i class="fas fa-calendar-alt"></i> Validity: 30 Days</div>
+                <button class="buy-now-btn" onclick="buyOffer('রবি ৫০০ মিনিট', 280)">Buy ৳280</button>
+            </div>
+        </div>
+
+        <div class="offer-card" data-category="Minutes" data-validity="15">
+            <div class="save-tag">CASHBACK ৳15</div>
+            <div class="card-top">
+                <div class="operator-icon"><img src="robi.png" alt="robi"></div>
+                <div class="details">
+                    <h3>রবি ৩০০ মিনিট ১৫ দিন মেয়াদে</h3>
+                    <div class="reg-price">Regular Price: ৳190</div>
+                    <div class="buy-price">Our Price: ৳175</div>
+                </div>
+            </div>
+            <div class="card-bottom">
+                <div class="validity-info"><i class="fas fa-calendar-alt"></i> Validity: 15 Days</div>
+                <button class="buy-now-btn" onclick="buyOffer('রবি ৩০০ মিনিট', 175)">Buy ৳175</button>
+            </div>
+        </div>
+
+        <div class="offer-card" data-category="Bundles" data-validity="30">
+            <div class="save-tag">CASHBACK ৳119</div>
+            <div class="card-top">
+                <div class="operator-icon"><img src="robi.png" alt="robi"></div>
+                <div class="details">
+                    <h3>রবি ৫০ জিবি ৫০০ মিনিট (ফ্যামিলি প্যাক)</h3>
+                    <div class="reg-price">Regular Price: ৳749</div>
+                    <div class="buy-price">Our Price: ৳630</div>
+                </div>
+            </div>
+            <div class="card-bottom">
+                <div class="validity-info"><i class="fas fa-calendar-alt"></i> Validity: 30 Days</div>
+                <button class="buy-now-btn" onclick="buyOffer('রবি ৫০ জিবি ৫০০ মিনিট', 630)">Buy ৳630</button>
+            </div>
+        </div>
+
+        <div class="offer-card" data-category="Bundles" data-validity="30">
+            <div class="save-tag">CASHBACK ৳80</div>
+            <div class="card-top">
+                <div class="operator-icon"><img src="robi.png" alt="robi"></div>
+                <div class="details">
+                    <h3>রবি ৪০ জিবি ৩০০ মিনিট</h3>
+                    <div class="reg-price">Regular Price: ৳540</div>
+                    <div class="buy-price">Our Price: ৳460</div>
+                </div>
+            </div>
+            <div class="card-bottom">
+                <div class="validity-info"><i class="fas fa-calendar-alt"></i> Validity: 30 Days</div>
+                <button class="buy-now-btn" onclick="buyOffer('রবি ৪০ জিবি ৩০০ মিনিট', 460)">Buy ৳460</button>
+            </div>
+        </div>
+
+        <div class="offer-card" data-category="Call Rate" data-validity="30">
+            <div class="save-tag">SPECIAL</div>
+            <div class="card-top">
+                <div class="operator-icon"><img src="robi.png" alt="robi"></div>
+                <div class="details">
+                    <h3>রবি স্পেশাল কলরেট (১ পয়সা/সেকেন্ড)</h3>
+                    <div class="reg-price">Regular Price: ৳54</div>
+                    <div class="buy-price">Our Price: ৳54</div>
+                </div>
+            </div>
+            <div class="card-bottom">
+                <div class="validity-info"><i class="fas fa-calendar-alt"></i> Validity: 30 Days</div>
+                <button class="buy-now-btn" onclick="buyOffer('রবি কলরেট', 54)">Activate ৳54</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let currentCategory = 'All';
+        let currentValidity = 'all';
+
+        function buyOffer(name, price) {
+            window.location.href = "pakage-buy.html";
+        }
+
+        function filterByCategory(cat, element) {
+            currentCategory = cat;
+            let tabs = document.querySelectorAll('.tabs-container .tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            element.classList.add('active');
+            applyFilters();
+        }
+
+        function filterByValidity(days, element) {
+            currentValidity = days;
+            let tabs = document.querySelectorAll('.validity-tabs .v-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            element.classList.add('active');
+            applyFilters();
+        }
+
+        function applyFilters() {
+            let searchInput = document.getElementById('searchInput').value.toLowerCase();
+            let cards = document.getElementsByClassName('offer-card');
+
+            for (let i = 0; i < cards.length; i++) {
+                let card = cards[i];
+                let title = card.querySelector('h3').innerText.toLowerCase();
+                let cat = card.getAttribute('data-category');
+                let val = card.getAttribute('data-validity');
+
+                let matchesSearch = title.includes(searchInput);
+                let matchesCategory = (currentCategory === 'All' || cat === currentCategory);
+                let matchesValidity = (currentValidity === 'all' || val === currentValidity);
+
+                if (matchesSearch && matchesCategory && matchesValidity) {
+                    card.style.display = "";
+                } else {
+                    card.style.display = "none";
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>

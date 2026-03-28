@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Transaction Detail Pop</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* আইফ্রেমের ভেতর কোনো গ্যাপ বা স্ক্রল থাকবে না */
+        html, body {
+            background-color: transparent;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; /* স্ক্রলবার বন্ধ */
+        }
+
+        .pop-card {
+            width: 100%; /* আইফ্রেমের পুরো উইডথ নিবে */
+            height: 100%; /* আইফ্রেমের পুরো হাইট নিবে */
+            background: white;
+            display: flex;
+            flex-direction: column;
+            animation: popIn 0.3s ease-out;
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .pop-header {
+            background-color: #007d3d;
+            background-image: radial-gradient(circle at 120% 50%, rgba(255,255,255,0.1) 0%, transparent 60%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .close-icon {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 28px;
+            color: white;
+            cursor: pointer;
+            line-height: 1;
+            z-index: 10;
+        }
+
+        .header-icon {
+            width: 50px;
+            height: 50px;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pop-title {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .pop-body {
+            padding: 20px;
+            text-align: center;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .info-item {
+            margin-bottom: 5px;
+        }
+
+        .info-label {
+            font-size: 11px;
+            color: #9ea1a5;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .pop-footer {
+            display: flex;
+            border-top: 1px solid #f0f0f0;
+            height: 55px;
+            flex-shrink: 0;
+        }
+
+        .footer-action {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: #007d3d;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .footer-action:first-child {
+            border-right: 1px solid #f0f0f0;
+        }
+
+        .footer-action i {
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="pop-card">
+        <div class="pop-header">
+            <div class="close-icon" onclick="closeMe()">&times;</div>
+            <div class="header-icon">
+                <i class="fas fa-money-check-alt" style="font-size: 40px;"></i>
+            </div>
+            <div class="pop-title" id="displayType">Transaction</div>
+        </div>
+
+        <div class="pop-body">
+            <div class="info-item">
+                <p class="info-label">Account Number</p>
+                <p class="info-value" id="displayNumber">017XXXXXXXX</p>
+            </div>
+
+            <div class="info-item">
+                <p class="info-label">Amount</p>
+                <p class="info-value"><span id="displayAmount">0</span> Tk.</p>
+            </div>
+
+            <div class="info-item">
+                <p class="info-label">Transaction ID</p>
+                <p class="info-value" id="displayID">N/A</p>
+            </div>
+
+            <div class="info-item">
+                <p class="info-label">Date and Time</p>
+                <p class="info-value" id="displayDate">Mar 2, 03:54 PM</p>
+            </div>
+        </div>
+
+        <div class="pop-footer">
+            <a href="#" id="callBtn" class="footer-action">
+                <i class="fas fa-phone-alt"></i> CALL
+            </a>
+            <a href="#" id="smsBtn" class="footer-action">
+                <i class="far fa-envelope"></i> SMS
+            </a>
+        </div>
+    </div>
+
+    <script>
+        function closeMe() {
+            if (window.parent && window.parent.closeModal) {
+                window.parent.closeModal();
+            } else {
+                window.close();
+            }
+        }
+
+        function getParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            const id = urlParams.get('id') || 'N/A';
+            const amt = urlParams.get('amt') || '0';
+            const type = urlParams.get('type') || 'Transaction';
+            const status = urlParams.get('status') || 'success';
+            const num = urlParams.get('num') || '01757971454';
+
+            document.getElementById('displayID').innerText = id;
+            document.getElementById('displayAmount').innerText = amt;
+            document.getElementById('displayType').innerText = type;
+            document.getElementById('displayNumber').innerText = num;
+
+            document.getElementById('callBtn').href = "tel:" + num;
+            document.getElementById('smsBtn').href = "sms:" + num;
+
+            if(status === 'rejected') {
+                document.querySelector('.pop-header').style.backgroundColor = '#c62828';
+            } else if(status === 'pending') {
+                document.querySelector('.pop-header').style.backgroundColor = '#ef6c00';
+            }
+        }
+
+        window.onload = getParams;
+    </script>
+</body>
+</html>

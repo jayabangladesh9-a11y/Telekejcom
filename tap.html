@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Send Money - Finalize</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #007d3d;
+            --gradient: linear-gradient(rgba(0, 125, 61, 0.7), rgba(0, 125, 61, 0.7));
+            --soft-bg: #f8fafb;
+        }
+
+        * {
+            margin: 0; padding: 0; box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--soft-bg);
+            display: flex; justify-content: center;
+            min-height: 100vh;
+        }
+
+        .app-container {
+            width: 100%; max-width: 450px;
+            background-color: #fff; height: 100vh;
+            display: flex; flex-direction: column;
+            position: relative; overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .top-banner {
+            background: var(--gradient), url('1.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 170px; padding: 25px; color: white;
+            border-bottom-left-radius: 35px; border-bottom-right-radius: 35px;
+            position: relative;
+        }
+
+        header { display: flex; align-items: center; margin-bottom: 15px; }
+        header i { font-size: 20px; cursor: pointer; }
+        header h1 { flex: 1; text-align: center; font-size: 18px; font-weight: 500; margin-right: 25px; }
+
+        .recipient-overlay {
+            background: url('1.jpg');
+            background-size: cover;
+            background-position: center;
+            padding: 12px 18px; border-radius: 20px;
+            display: flex; align-items: center;
+            margin-top: 5px; border: 1px solid rgba(255,255,255,0.5);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .avatar-box {
+            width: 42px; height: 42px; background: white;
+            border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; margin-right: 12px;
+            z-index: 2;
+        }
+        .avatar-box i { color: var(--primary-color); font-size: 18px; }
+        
+        .recipient-info { z-index: 2; color: white; }
+        .recipient-info p { font-size: 11px; font-weight: 600; text-shadow: 0 1px 3px rgba(0,0,0,0.8); }
+        .recipient-info h3 { font-size: 15px; font-weight: 700; text-shadow: 0 1px 4px rgba(0,0,0,0.8); }
+
+        .summary-grid {
+            margin: 20px 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .grid-item {
+            background: #fff;
+            padding: 15px;
+            border-radius: 18px;
+            border: 1px solid #f0f0f0;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        }
+
+        .grid-val { display: block; font-size: 15px; font-weight: 700; color: #333; margin-bottom: 5px; }
+        .grid-lab { display: block; font-size: 11px; color: var(--primary-color); font-weight: 600; text-transform: uppercase; }
+
+        .tap-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding-bottom: 40px;
+        }
+
+        .tap-button-container {
+            position: relative;
+            width: 140px; height: 140px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; user-select: none;
+        }
+
+        .svg-ring { position: absolute; transform: rotate(-90deg); z-index: 1; }
+        .ring-track { fill: none; stroke: #f0f0f0; stroke-width: 8; }
+        
+        .ring-fill {
+            fill: none; stroke: var(--primary-color); stroke-width: 8;
+            stroke-dasharray: 377; stroke-dashoffset: 377;
+            stroke-linecap: round;
+        }
+
+        .tap-circle {
+            width: 100px; height: 100px;
+            background: #fff; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: relative; z-index: 2;
+            transition: transform 0.1s ease;
+        }
+
+        .tap-button-container:active .tap-circle { transform: scale(0.92); }
+        .tap-circle i { font-size: 35px; color: var(--primary-color); }
+
+        #finalLoader {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .spinner_snake {
+            width: 60px; height: 60px;
+            animation: spinner_snake_anim 1.5s linear infinite;
+        }
+
+        @keyframes spinner_snake_anim { 100% { transform: rotate(360deg); } }
+
+        .tap-label { margin-top: 15px; font-size: 14px; color: var(--primary-color); font-weight: 600; }
+
+        @media (max-width: 480px) { .app-container { height: 100vh; max-width: 100%; border-radius: 0; } }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <div class="top-banner">
+            <header>
+                <i class="fas fa-chevron-left" onclick="history.back()"></i>
+                <h1>Confirm Send Money</h1>
+            </header>
+            <div class="recipient-overlay">
+                <div class="avatar-box"><i class="fas fa-user"></i></div>
+                <div class="recipient-info">
+                    <p>Recipient</p>
+                    <h3>01845-123092</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="summary-grid">
+            <div class="grid-item">
+                <span class="grid-val">৳ 12,180.00</span>
+                <span class="grid-lab">Amount</span>
+            </div>
+            <div class="grid-item">
+                <span class="grid-val">৳ 0.00</span>
+                <span class="grid-lab">Charge</span>
+            </div>
+            <div class="grid-item">
+                <span class="grid-val">৳ 12,180.00</span>
+                <span class="grid-lab">Total</span>
+            </div>
+            <div class="grid-item">
+                <span class="grid-val">৳ 8,220.35</span>
+                <span class="grid-lab">New Balance</span>
+            </div>
+        </div>
+
+        <div class="tap-section">
+            <div id="holdUI" style="display: flex; flex-direction: column; align-items: center;">
+                <div class="tap-button-container" id="tapBtn" 
+                     onmousedown="startHold()" onmouseup="stopHold()" 
+                     onmouseleave="stopHold()"
+                     ontouchstart="startHold()" ontouchend="stopHold()">
+                    
+                    <svg class="svg-ring" width="130" height="130">
+                        <circle class="ring-track" cx="65" cy="65" r="60"></circle>
+                        <circle class="ring-fill" id="fillCircle" cx="65" cy="65" r="60"></circle>
+                    </svg>
+
+                    <div class="tap-circle">
+                        <i class="fas fa-paper-plane"></i>
+                    </div>
+                </div>
+                <p class="tap-label">Tap and Hold to Confirm</p>
+            </div>
+
+            <div id="finalLoader">
+                <svg class="spinner_snake" viewBox="0 0 50 50">
+                    <defs>
+                        <linearGradient id="spiderGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:var(--primary-color);stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#00a350;stop-opacity:0" />
+                        </linearGradient>
+                    </defs>
+                    <path d="M25 5 A20 20 0 0 1 45 25" stroke="url(#spiderGradient)" stroke-width="6" fill="none" stroke-linecap="round"></path>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let holdTimer;
+        const fillCircle = document.getElementById('fillCircle');
+        const holdUI = document.getElementById('holdUI');
+        const finalLoader = document.getElementById('finalLoader');
+
+        function startHold() {
+            fillCircle.style.transition = 'stroke-dashoffset 2s linear';
+            fillCircle.style.strokeDashoffset = '0';
+
+            holdTimer = setTimeout(() => {
+                completeAction();
+            }, 2000);
+        }
+
+        function stopHold() {
+            clearTimeout(holdTimer);
+            fillCircle.style.transition = 'stroke-dashoffset 0.3s ease-out';
+            fillCircle.style.strokeDashoffset = '377';
+        }
+
+        function completeAction() {
+            holdUI.style.display = 'none';
+            finalLoader.style.display = 'flex';
+            
+            setTimeout(() => {
+                window.location.href = 'success.html'; 
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

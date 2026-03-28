@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#007d3d">
+    <title>Transactions - Bondhu Telecom</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0; padding: 0; box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #f8fafc;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 450px;
+            background-color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .header {
+            background: linear-gradient(rgba(0, 125, 61, 0.9), rgba(0, 90, 44, 0.95)), url('1.jpg');
+            background-size: cover;
+            background-position: center;
+            padding: 20px 15px 30px;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom-left-radius: 25px;
+            border-bottom-right-radius: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .header-top i { font-size: 18px; cursor: pointer; }
+        .header-top h2 { font-size: 18px; font-weight: 600; }
+
+        .tabs {
+            display: flex;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 4px;
+            border-radius: 12px;
+            backdrop-filter: blur(5px);
+        }
+
+        .tab {
+            flex: 1; text-align: center; padding: 8px;
+            font-size: 12px; font-weight: 600;
+            border-radius: 10px; cursor: pointer; transition: 0.3s;
+        }
+
+        .tab.active { background: white; color: #007d3d; }
+
+        .trx-list { padding: 20px 15px; flex: 1; }
+        .date-label {
+            font-size: 11px; font-weight: 700; color: #94a3b8;
+            text-transform: uppercase; margin-bottom: 12px; display: block;
+        }
+
+        .trx-card {
+            background: white; border: 1px solid #f1f5f9;
+            border-radius: 16px; padding: 12px;
+            display: flex; align-items: center; gap: 12px;
+            margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+
+        .op-icon {
+            width: 45px; height: 45px; border-radius: 12px;
+            background: #f1f5f9; display: flex;
+            align-items: center; justify-content: center; overflow: hidden;
+        }
+
+        .op-icon img { width: 100%; height: 100%; object-fit: cover; }
+        .trx-info { flex: 1; }
+        .trx-info h4 { font-size: 13px; font-weight: 700; color: #1e293b; }
+        .trx-info p { font-size: 10px; color: #64748b; font-weight: 500; }
+        .trx-info .trx-id-text { font-family: monospace; color: #007d3d; font-size: 10px; margin-top: 2px; display: block; }
+
+        .trx-amount-side { text-align: right; min-width: 90px; }
+        .amount { display: block; font-size: 13px; font-weight: 700; }
+        .amount.minus { color: #ef4444; }
+        .amount.plus { color: #16a34a; }
+
+        .status-badge {
+            font-size: 8px; font-weight: 800; padding: 2px 6px;
+            border-radius: 5px; text-transform: uppercase;
+            display: inline-block; margin-top: 5px;
+        }
+
+        .status-success { background: #f0fdf4; color: #16a34a; }
+        .status-rejected { background: #fef2f2; color: #dc2626; }
+
+        .time-text {
+            font-size: 9px;
+            color: #94a3b8;
+            line-height: 1.2;
+            margin-top: 4px;
+        }
+
+        @media (max-width: 480px) { .app-container { max-width: 100%; } }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <div class="header">
+            <div class="header-top">
+                <i class="fas fa-chevron-left" onclick="history.back()"></i>
+                <h2>Transactions History</h2>
+            </div>
+            <div class="tabs">
+                <div class="tab active">All History</div>
+                <div class="tab">Success</div>
+                <div class="tab">Rejected</div>
+            </div>
+        </div>
+
+        <div class="trx-list">
+            <span class="date-label">Today</span>
+
+            <div class="trx-card">
+                <div class="op-icon"><img src="robi.png" alt="Robi"></div>
+                <div class="trx-info">
+                    <h4>Robi 30 GB Internet</h4>
+                    <p>Number: 01845-123092</p>
+                    <span class="trx-id-text">ID: BONDHU71IHIW</span>
+                    <span class="status-badge status-success">Success</span>
+                </div>
+                <div class="trx-amount-side">
+                    <span class="amount minus">- ৳ 449.00</span>
+                    <p class="time-text">06:12 PM<br>26 Mar, 2026</p>
+                </div>
+            </div>
+
+            <div class="trx-card">
+                <div class="op-icon"><img src="gp.png" alt="GP"></div>
+                <div class="trx-info">
+                    <h4>GP 1000 Minutes</h4>
+                    <p>Number: 01781-145086</p>
+                    <p style="color: #ef4444; font-size: 9px;">Reason: Insufficient Balance</p>
+                    <span class="status-badge status-rejected">Rejected</span>
+                </div>
+                <div class="trx-amount-side">
+                    <span class="amount minus" style="opacity: 0.5;">- ৳ 600.00</span>
+                    <p class="time-text">04:45 PM<br>26 Mar, 2026</p>
+                </div>
+            </div>
+
+            <span class="date-label" style="margin-top: 15px;">Yesterday</span>
+
+            <div class="trx-card">
+                <div class="op-icon" style="background: #e0f2fe;"><i class="fas fa-wallet" style="color: #0ea5e9;"></i></div>
+                <div class="trx-info">
+                    <h4>Add Balance (Bkash)</h4>
+                    <span class="trx-id-text">ID: BK7890221X</span>
+                    <span class="status-badge status-success">Success</span>
+                </div>
+                <div class="trx-amount-side">
+                    <span class="amount plus">+ ৳ 1000.00</span>
+                    <p class="time-text">11:20 AM<br>25 Mar, 2026</p>
+                </div>
+            </div>
+
+            <div class="trx-card">
+                <div class="op-icon"><img src="bl.png" alt="BL" onerror="this.src='https://via.placeholder.com/45?text=BL'"></div>
+                <div class="trx-info">
+                    <h4>Banglalink 10GB</h4>
+                    <p>Number: 01923-456789</p>
+                    <p style="color: #ef4444; font-size: 9px;">Reason: System Error</p>
+                    <span class="status-badge status-rejected">Rejected</span>
+                </div>
+                <div class="trx-amount-side">
+                    <span class="amount minus" style="opacity: 0.5;">- ৳ 129.00</span>
+                    <p class="time-text">09:15 AM<br>25 Mar, 2026</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const tabs = document.querySelectorAll('.tab');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

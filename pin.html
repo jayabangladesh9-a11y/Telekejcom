@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#007d3d">
+    <title>Confirm Send Money - Bondhu Telecom</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0; padding: 0; box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #f8fafc;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 450px;
+            background-color: #fff;
+            height: 100vh;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+        }
+
+        .slide-left { transform: translateX(-100%); opacity: 0; }
+        .slide-right { transform: translateX(100%); opacity: 0; }
+
+        .header-banner {
+            background: linear-gradient(rgba(0, 100, 50, 0.8), rgba(0, 70, 35, 0.9)), url('1.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 140px;
+            padding: 15px 20px;
+            color: white;
+            border-bottom-left-radius: 35px;
+            border-bottom-right-radius: 35px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 18px;
+            color: white;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        header h1 {
+            text-align: center;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .recipient-box {
+            background: linear-gradient(rgba(0, 143, 76, 0.8), rgba(0, 143, 76, 0.8)), url('1.jpg');
+            background-size: cover;
+            background-position: center;
+            padding: 10px 15px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            border: 1.5px solid rgba(255, 255, 255, 0.4);
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .avatar {
+            width: 32px; height: 32px;
+            background: white;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin-right: 12px;
+            color: #007d3d;
+            font-size: 14px;
+        }
+
+        .content-section {
+            padding: 30px 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .info-pill {
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 18px;
+            border-radius: 25px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+            border: 1px solid #f1f5f9;
+        }
+
+        .info-item { text-align: center; flex: 1; }
+        .info-label { display: block; font-size: 10px; color: #94a3b8; font-weight: 800; text-transform: uppercase; margin-bottom: 5px; }
+        .info-value { display: block; font-size: 16px; font-weight: 700; color: #007d3d; }
+
+        .input-group {
+            background: #e6f7ed;
+            border: 1.5px solid #a3e9c1;
+            border-radius: 20px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            transition: 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 125, 61, 0.05);
+        }
+
+        .input-group.active {
+            background: #fff;
+            border-color: #007d3d;
+            box-shadow: 0 8px 20px rgba(0, 125, 61, 0.1);
+        }
+
+        .input-group i { color: #00994d; width: 25px; font-size: 16px; margin-right: 12px; }
+        .input-group.active i { color: #007d3d; }
+
+        .input-group input {
+            border: none; outline: none; background: transparent;
+            width: 100%; font-size: 18px; font-weight: 800; color: #1e293b;
+        }
+
+        .input-group input::placeholder { color: #808e9b; font-weight: 500; font-size: 15px; }
+
+        .btn-container { 
+            padding: 20px 60px; 
+            background: white; 
+            display: flex;
+            justify-content: center;
+        }
+        
+        .next-btn {
+            background: #f1f5f9; 
+            color: #cbd5e1;
+            width: 100%; 
+            padding: 14px; 
+            border-radius: 50px;
+            text-align: center; 
+            font-weight: 700; 
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s ease; 
+            pointer-events: none;
+            border: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        
+        .next-btn.active {
+            background: linear-gradient(135deg, #007d3d 0%, #00a350 100%);
+            color: white; 
+            pointer-events: auto;
+            box-shadow: 0 8px 15px rgba(0, 125, 61, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .next-btn.active:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 8px rgba(0, 125, 61, 0.2);
+        }
+
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(0.97); } 100% { transform: scale(1); } }
+        .pulse { animation: pulse 0.4s ease; }
+
+        @media (max-width: 480px) { 
+            .main-container { max-width: 100%; }
+            .content-section { padding: 25px 15px; }
+            .btn-container { padding: 20px 40px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-container" id="app">
+    <div class="header-banner">
+        <i class="fas fa-arrow-left back-btn" onclick="goBack()"></i>
+        <header><h1>Confirm Send Money</h1></header>
+        <div class="recipient-box">
+            <div class="avatar"><i class="fas fa-user"></i></div>
+            <div>
+                <p class="text-[9px] opacity-100 uppercase font-extrabold tracking-tighter text-white">Recipient Number</p>
+                <h3 class="text-sm font-bold text-white">01845-123092</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-section">
+        <div class="info-pill">
+            <div class="info-item">
+                <span class="info-label">Amount</span>
+                <span class="info-value">৳ 12,180.00</span>
+            </div>
+            <div style="width: 1px; height: 25px; background: #f1f5f9; align-self: center;"></div>
+            <div class="info-item">
+                <span class="info-label">Charge</span>
+                <span class="info-value">৳ 0.00</span>
+            </div>
+        </div>
+
+        <div class="input-group" id="refBox">
+            <i class="fas fa-comment-dots"></i>
+            <input type="text" id="refInput" placeholder="Reference (Max 10)" oninput="validate()" onfocus="toggleFocus('refBox', true)" onblur="toggleFocus('refBox', false)">
+            <span class="text-[10px] text-green-700 font-extrabold" id="charCount">0/10</span>
+        </div>
+
+        <div class="input-group" id="pinBox">
+            <i class="fas fa-shield-alt"></i>
+            <input type="password" id="pinInput" placeholder="Enter Secure PIN" inputmode="numeric" oninput="validate()" onfocus="toggleFocus('pinBox', true)" onblur="toggleFocus('pinBox', false)">
+        </div>
+    </div>
+
+    <div class="btn-container">
+        <button class="next-btn" id="nextBtn" onclick="processPayment()">
+            Confirm <i class="fas fa-chevron-right text-[10px]"></i>
+        </button>
+    </div>
+</div>
+
+<script>
+    function toggleFocus(id, isFocused) {
+        const box = document.getElementById(id);
+        if (isFocused) box.classList.add('active');
+        else box.classList.remove('active');
+    }
+
+    function validate() {
+        const pinInput = document.getElementById('pinInput');
+        const refInput = document.getElementById('refInput');
+        const btn = document.getElementById('nextBtn');
+        const count = document.getElementById('charCount');
+
+        if (refInput.value.length > 10) {
+            refInput.value = refInput.value.slice(0, 10);
+        }
+
+        count.innerText = `${refInput.value.length}/10`;
+
+        if (pinInput.value.length >= 4) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    }
+
+    function goBack() {
+        const app = document.getElementById('app');
+        app.classList.add('slide-right');
+        setTimeout(() => { history.back(); }, 400);
+    }
+
+    function processPayment() {
+        const btn = document.getElementById('nextBtn');
+        const app = document.getElementById('app');
+        if (btn.classList.contains('active')) {
+            btn.classList.add('pulse');
+            setTimeout(() => {
+                app.classList.add('slide-left');
+                setTimeout(() => { window.location.href = 'success.html'; }, 400);
+            }, 300);
+        }
+    }
+</script>
+
+</body>
+</html>

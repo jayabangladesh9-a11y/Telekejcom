@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#007d3d"> 
+    <title>Confirm Recharge - Bondhu Telecom</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #007d3d;
+            --gradient: linear-gradient(rgba(0, 125, 61, 0.8), rgba(0, 90, 44, 0.9));
+            --soft-bg: #f8fafb;
+        }
+
+        * {
+            margin: 0; padding: 0; box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--soft-bg);
+            display: flex; justify-content: center;
+            min-height: 100vh;
+        }
+
+        .app-container {
+            width: 100%; max-width: 450px;
+            background-color: #fff; height: 100vh;
+            display: flex; flex-direction: column;
+            position: relative; overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .top-banner {
+            background: var(--gradient), url('1.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 180px; padding: 25px; color: white;
+            border-bottom-left-radius: 35px; border-bottom-right-radius: 35px;
+            position: relative;
+        }
+
+        header { display: flex; align-items: center; margin-bottom: 15px; }
+        header i { font-size: 20px; cursor: pointer; }
+        header h1 { flex: 1; text-align: center; font-size: 18px; font-weight: 500; margin-right: 25px; }
+
+        .recipient-overlay {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 12px 18px; border-radius: 20px;
+            display: flex; align-items: center;
+            margin-top: 5px; border: 1px solid rgba(255,255,255,0.3);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .avatar-box {
+            width: 42px; height: 42px; background: white;
+            border-radius: 12px; display: flex; align-items: center;
+            justify-content: center; margin-right: 12px;
+            overflow: hidden;
+        }
+        .avatar-box img { width: 100%; height: 100%; padding: 5px; object-fit: contain; }
+        
+        .recipient-info { color: white; }
+        .recipient-info p { font-size: 10px; font-weight: 600; opacity: 0.9; text-transform: uppercase; letter-spacing: 1px; }
+        .recipient-info h3 { font-size: 16px; font-weight: 700; }
+
+        .offer-preview-card {
+            margin: 20px 20px 0 20px;
+            padding: 15px;
+            background: #f0fdf4;
+            border: 1px dashed var(--primary-color);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .offer-preview-card i { color: var(--primary-color); font-size: 20px; }
+        .offer-preview-card span { font-size: 14px; font-weight: 700; color: #1e293b; }
+
+        .summary-grid {
+            margin: 15px 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .grid-item {
+            background: #fff;
+            padding: 15px;
+            border-radius: 18px;
+            border: 1px solid #f1f5f9;
+            text-align: left;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+
+        .grid-lab { display: block; font-size: 9px; color: #64748b; font-weight: 700; text-transform: uppercase; margin-bottom: 4px; }
+        .grid-val { display: block; font-size: 14px; font-weight: 700; color: #334155; }
+        .grid-val.total { color: var(--primary-color); font-size: 18px; }
+
+        .tap-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding-bottom: 30px;
+        }
+
+        .tap-button-container {
+            position: relative;
+            width: 140px; height: 140px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; user-select: none;
+        }
+
+        .svg-ring { position: absolute; transform: rotate(-90deg); z-index: 1; }
+        .ring-track { fill: none; stroke: #f1f5f9; stroke-width: 10; }
+        
+        .ring-fill {
+            fill: none; stroke: var(--primary-color); stroke-width: 10;
+            stroke-dasharray: 377; stroke-dashoffset: 377;
+            stroke-linecap: round;
+        }
+
+        .tap-circle {
+            width: 100px; height: 100px;
+            background: #fff; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            position: relative; z-index: 2;
+            transition: transform 0.1s ease;
+        }
+
+        .tap-button-container:active .tap-circle { transform: scale(0.92); }
+        .tap-circle i { font-size: 35px; color: var(--primary-color); }
+
+        #finalLoader {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .spinner_snake {
+            width: 60px; height: 60px;
+            animation: spinner_snake_anim 1.5s linear infinite;
+        }
+
+        @keyframes spinner_snake_anim { 100% { transform: rotate(360deg); } }
+
+        .tap-label { margin-top: 15px; font-size: 13px; color: #64748b; font-weight: 600; }
+        .tap-label b { color: var(--primary-color); }
+
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <div class="top-banner">
+            <header>
+                <i class="fas fa-chevron-left" onclick="history.back()"></i>
+                <h1>Confirm Recharge</h1>
+            </header>
+            <div class="recipient-overlay">
+                <div class="avatar-box"><img src="robi.png" id="opImg" alt="Operator"></div>
+                <div class="recipient-info">
+                    <p>Mobile Number</p>
+                    <h3 id="displayNum">018XXXXXXXX</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="offer-preview-card">
+            <i class="fas fa-bolt"></i>
+            <span>Mobile Recharge Service</span>
+        </div>
+
+        <div class="summary-grid">
+            <div class="grid-item">
+                <span class="grid-lab">Amount to Pay</span>
+                <span class="grid-val total" id="displayAmt">৳ 0.00</span>
+            </div>
+            <div class="grid-item">
+                <span class="grid-lab">Type</span>
+                <span class="grid-val">Prepaid</span>
+            </div>
+            <div class="grid-item">
+                <span class="grid-lab">Operator</span>
+                <span class="grid-val">Robi Axiata</span>
+            </div>
+            <div class="grid-item">
+                <span class="grid-lab">Post Balance</span>
+                <span class="grid-val" id="newBal">৳ 8,220.35</span>
+            </div>
+        </div>
+
+        <div class="tap-section">
+            <div id="holdUI" style="display: flex; flex-direction: column; align-items: center;">
+                <div class="tap-button-container" id="tapBtn" 
+                     onmousedown="startHold()" onmouseup="stopHold()" 
+                     onmouseleave="stopHold()"
+                     ontouchstart="startHold()" ontouchend="stopHold()">
+                    
+                    <svg class="svg-ring" width="130" height="130">
+                        <circle class="ring-track" cx="65" cy="65" r="60"></circle>
+                        <circle class="ring-fill" id="fillCircle" cx="65" cy="65" r="60"></circle>
+                    </svg>
+
+                    <div class="tap-circle">
+                        <i class="fas fa-fingerprint"></i>
+                    </div>
+                </div>
+                <p class="tap-label">Tap and Hold to <b>Confirm</b></p>
+            </div>
+
+            <div id="finalLoader">
+                <svg class="spinner_snake" viewBox="0 0 50 50">
+                    <defs>
+                        <linearGradient id="spiderGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:var(--primary-color);stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#00a350;stop-opacity:0" />
+                        </linearGradient>
+                    </defs>
+                    <path d="M25 5 A20 20 0 0 1 45 25" stroke="url(#spiderGradient)" stroke-width="6" fill="none" stroke-linecap="round"></path>
+                </svg>
+                <p class="tap-label">Processing Recharge...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let holdTimer;
+        const fillCircle = document.getElementById('fillCircle');
+        const holdUI = document.getElementById('holdUI');
+        const finalLoader = document.getElementById('finalLoader');
+
+        function startHold() {
+            fillCircle.style.transition = 'stroke-dashoffset 2s linear';
+            fillCircle.style.strokeDashoffset = '0';
+
+            holdTimer = setTimeout(() => {
+                completeAction();
+            }, 2000);
+        }
+
+        function stopHold() {
+            clearTimeout(holdTimer);
+            fillCircle.style.transition = 'stroke-dashoffset 0.3s ease-out';
+            fillCircle.style.strokeDashoffset = '377';
+        }
+
+        function completeAction() {
+            holdUI.style.display = 'none';
+            finalLoader.style.display = 'flex';
+            
+            setTimeout(() => {
+                // সাজ্জাদ, এখানে তোমার সাকসেস পেজের লিঙ্ক দাও
+                window.location.href = 'recharge-success.html'; 
+            }, 2500);
+        }
+    </script>
+</body>
+</html>

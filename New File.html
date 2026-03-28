@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#007d3d"> <title>Bondhu Telecom App</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Fixed Top Header */
+        .top-header {
+            background: linear-gradient(rgba(0, 125, 61, 0.8), rgba(0, 90, 44, 0.8)), url('1.jpg');
+            background-size: cover;
+            background-position: center;
+            padding: 15px 20px;
+            color: white;
+            text-align: center;
+            border-bottom-left-radius: 25px;
+            border-bottom-right-radius: 25px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1001;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .notif-icon {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 22px;
+            cursor: pointer;
+        }
+
+        .header-logo {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .header-sub {
+            font-size: 10px;
+            opacity: 0.8;
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
+
+        .balance-card {
+            background: white;
+            color: #007d3d;
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 25px;
+            border-radius: 30px;
+            margin-top: 15px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .balance-card:active {
+            transform: scale(0.95);
+        }
+
+        .balance-card i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        /* Scrollable Main Content */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            margin-top: 145px;
+            padding-bottom: 90px;
+            scrollbar-width: none;
+        }
+
+        .main-content::-webkit-scrollbar {
+            display: none;
+        }
+
+        .section-title {
+            padding: 15px 20px 10px;
+            font-size: 14px;
+            color: #555;
+            font-weight: 700;
+        }
+
+        /* App Grid Styling */
+        .grid-container {
+            background: white;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            padding: 20px 10px;
+            margin: 0 15px;
+            border-radius: 20px;
+            gap: 15px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+        }
+
+        .grid-item {
+            text-align: center;
+            transition: transform 0.2s;
+        }
+
+        .grid-item:active {
+            transform: scale(0.9);
+        }
+
+        .icon-box {
+            width: 50px;
+            height: 50px;
+            background: #007d3d;
+            color: white;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 8px;
+            font-size: 22px;
+            box-shadow: 0 4px 10px rgba(0, 125, 61, 0.2);
+        }
+
+        .grid-item span {
+            font-size: 10px;
+            color: #333;
+            font-weight: 600;
+            display: block;
+            height: 24px;
+            line-height: 1.2;
+        }
+
+        /* Slider Area */
+        .slider-wrapper {
+            margin: 20px 15px;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .slider-container {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .slide {
+            min-width: 100%;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 160px;
+            object-fit: fill;
+            display: block;
+        }
+
+        /* Fixed Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            border-top: 1px solid #f0f0f0;
+            z-index: 1001;
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.05);
+        }
+
+        .nav-item {
+            text-align: center;
+            color: #999;
+            font-size: 10px;
+            flex: 1;
+            font-weight: 600;
+        }
+
+        .nav-item.active {
+            color: #007d3d;
+        }
+
+        .nav-item i {
+            display: block;
+            font-size: 22px;
+            margin-bottom: 4px;
+        }
+
+        @media (max-width: 480px) {
+            .grid-container { grid-template-columns: repeat(4, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .main-content { margin-top: 145px; }
+        }
+
+        @media (max-width: 1024px) {
+            .header-logo { font-size: 22px; }
+        }
+
+        @media (min-width: 1025px) {
+            .grid-container { max-width: 800px; margin: 0 auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-header">
+        <div class="notif-icon"><i class="far fa-bell"></i></div>
+        <div class="header-logo">বন্ধু টেলিকম</div>
+        <div class="header-sub">ডাক বিভাগের ডিজিটাল লেনদেন</div>
+        <div class="balance-card" id="balanceBtn">
+            <i class="fas fa-wallet"></i>
+            <span id="balanceText">Tap for Balance</span>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="section-title">Services</div>
+        <div class="grid-container">
+            <div class="grid-item">
+                <div class="icon-box"><i class="fas fa-paper-plane"></i></div>
+                <span>Send Money</span>
+            </div>
+            <div class="grid-item">
+                <div class="icon-box"><i class="fas fa-hand-holding-usd"></i></div>
+                <span>Cash Out</span>
+            </div>
+            <div class="grid-item">
+                <div class="icon-box"><i class="fas fa-mobile-alt"></i></div>
+                <span>Mobile Recharge</span>
+            </div>
+            <div class="grid-item">
+                <div class="icon-box"><i class="fas fa-plus-circle"></i></div>
+                <span>Add Money</span>
+            </div>
+        </div>
+
+        <div class="slider-wrapper">
+            <div class="slider-container" id="slider">
+                <div class="slide"><img src="https://i.postimg.cc/hvJbdjzs/1773851290825.png" alt="Banner 1"></div>
+                <div class="slide"><img src="https://i.postimg.cc/FzfgLRdq/1773850564527.png" alt="Banner 2"></div>
+                <div class="slide"><img src="https://i.postimg.cc/fLdRSQWg/1773850947073.png" alt="Banner 3"></div>
+            </div>
+        </div>
+
+        <div class="section-title">Payments</div>
+        <div class="grid-container">
+            <div class="grid-item">
+                <div class="icon-box"><i class="fas fa-shopping-cart"></i></div>
+                <span>Merchant Pay</span>
+            </div>
+            <div class="grid-item">
+                <div class="icon-box"><i class="fas fa-file-invoice-dollar"></i></div>
+                <span>Bill Pay</span>
+            </div>
+            <div class="grid-item">
+                <div class="icon-box"><i class="fas fa-clock"></i></div>
+                <span>EMI Payment</span>
+            </div>
+            <div class="grid-item">
+                <div class="icon-box"><i class="fas fa-th-large"></i></div>
+                <span>More</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <div class="nav-item active">
+            <i class="fas fa-th-large"></i>
+            Home
+        </div>
+        <div class="nav-item">
+            <i class="fas fa-exchange-alt"></i>
+            History
+        </div>
+        <div class="nav-item">
+            <i class="fas fa-users"></i>
+            People
+        </div>
+        <div class="nav-item">
+            <i class="fas fa-cog"></i>
+            Settings
+        </div>
+    </div>
+
+    <script>
+        const balanceBtn = document.getElementById('balanceBtn');
+        const balanceText = document.getElementById('balanceText');
+        let isShowing = false;
+
+        balanceBtn.addEventListener('click', () => {
+            if(!isShowing) {
+                balanceText.style.letterSpacing = "1px";
+                balanceText.innerText = '৳ ২৫০০.৫০'; 
+                isShowing = true;
+                setTimeout(() => {
+                    balanceText.style.letterSpacing = "normal";
+                    balanceText.innerText = 'Tap for Balance';
+                    isShowing = false;
+                }, 3000);
+            }
+        });
+
+        const slider = document.getElementById('slider');
+        let counter = 0;
+        setInterval(() => {
+            counter++;
+            if(counter > 2) counter = 0;
+            slider.style.transform = `translateX(${-counter * 100}%)`;
+        }, 4000);
+    </script>
+
+</body>
+</html>

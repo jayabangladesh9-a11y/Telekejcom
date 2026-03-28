@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#007d3d">
+    <title>Add Money - Bondhu Telecom</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0; padding: 0; box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #f8fafc;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 450px;
+            background-color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Compact Header */
+        .header {
+            background: linear-gradient(135deg, #007d3d 0%, #005a2c 100%);
+            padding: 20px 15px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .header i { font-size: 18px; cursor: pointer; }
+        .header h2 { font-size: 18px; font-weight: 700; }
+
+        .content { padding: 20px; flex: 1; }
+
+        /* Payment Method Grid */
+        .section-title { font-size: 14px; font-weight: 700; color: #1e293b; margin-bottom: 12px; display: block; }
+        
+        .method-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 25px; }
+        .method-card {
+            border: 2px solid #f1f5f9;
+            border-radius: 15px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .method-card.active { border-color: #007d3d; background: #f0fdf4; }
+        .method-card img { width: 40px; height: 40px; margin: 0 auto 5px; border-radius: 8px; }
+        .method-card span { font-size: 11px; font-weight: 700; color: #475569; }
+
+        /* Input Styles */
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; font-size: 12px; font-weight: 600; color: #64748b; margin-bottom: 6px; }
+        .input-field {
+            width: 100%;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 12px 15px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+            outline: none;
+            transition: 0.3s;
+        }
+        .input-field:focus { border-color: #007d3d; background: #fff; }
+
+        /* Copy Number Card */
+        .copy-card {
+            background: #fffbeb;
+            border: 1px dashed #f59e0b;
+            padding: 15px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .copy-card p { font-size: 12px; color: #92400e; font-weight: 600; }
+        .copy-card span { font-size: 15px; color: #1e293b; font-weight: 800; }
+        .copy-btn { background: #f59e0b; color: white; padding: 5px 12px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; }
+
+        /* Submit Button */
+        .submit-btn {
+            background: #007d3d;
+            color: white;
+            width: 100%;
+            padding: 15px;
+            border-radius: 15px;
+            font-size: 15px;
+            font-weight: 700;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(0, 125, 61, 0.2);
+            border: none;
+            cursor: pointer;
+        }
+        .submit-btn:active { transform: scale(0.98); }
+
+        @media (max-width: 480px) { .app-container { max-width: 100%; } }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <div class="header">
+        <i class="fas fa-arrow-left" onclick="history.back()"></i>
+        <h2>অ্যাড মানি</h2>
+    </div>
+
+    <div class="content">
+        <span class="section-title">পেমেন্ট মেথড সিলেক্ট করুন</span>
+        <div class="method-grid">
+            <div class="method-card active" onclick="selectMethod(this)">
+                <img src="https://I.ibb.co/689NfB2/bkash.png" alt="bkash" onerror="this.src='https://via.placeholder.com/40?text=B'">
+                <span>বিকাশ</span>
+            </div>
+            <div class="method-card" onclick="selectMethod(this)">
+                <img src="https://I.ibb.co/L8p7p7L/nagad.png" alt="nagad" onerror="this.src='https://via.placeholder.com/40?text=N'">
+                <span>নগদ</span>
+            </div>
+            <div class="method-card" onclick="selectMethod(this)">
+                <img src="https://I.ibb.co/vYm6zG0/rocket.png" alt="rocket" onerror="this.src='https://via.placeholder.com/40?text=R'">
+                <span>রকেট</span>
+            </div>
+        </div>
+
+        <div class="copy-card">
+            <div>
+                <p>পার্সোনাল নাম্বারে সেন্ড মানি করুন</p>
+                <span id="targetNumber">০১৮৪৫-১২৩০৯২</span>
+            </div>
+            <div class="copy-btn" onclick="copyNumber()">কপি করুন</div>
+        </div>
+
+        <div class="input-group">
+            <label>টাকার পরিমাণ লিখুন</label>
+            <input type="number" class="input-field" placeholder="সর্বনিম্ন ৫০ টাকা" id="amount">
+        </div>
+
+        <div class="input-group">
+            <label>ট্রানজ্যাকশন আইডি (TrxID)</label>
+            <input type="text" class="input-field" placeholder="যেমন: 8XJ2K9L0" id="trxid">
+        </div>
+
+        <button class="submit-btn" onclick="submitAddMoney()">
+            <i class="fas fa-check-circle"></i> রিকোয়েস্ট পাঠান
+        </button>
+    </div>
+</div>
+
+<script>
+    function selectMethod(el) {
+        document.querySelectorAll('.method-card').forEach(card => card.classList.remove('active'));
+        el.classList.add('active');
+    }
+
+    function copyNumber() {
+        const num = document.getElementById('targetNumber').innerText;
+        navigator.clipboard.writeText(num);
+        alert('নাম্বার কপি করা হয়েছে: ' + num);
+    }
+
+    function submitAddMoney() {
+        const amount = document.getElementById('amount').value;
+        const trx = document.getElementById('trxid').value;
+
+        if(!amount || !trx) {
+            alert('সাজ্জাদ, দয়া করে সব তথ্য সঠিকভাবে দাও!');
+            return;
+        }
+        
+        // Success Logic
+        alert('আপনার অ্যাড মানি রিকোয়েস্ট সফলভাবে পাঠানো হয়েছে!');
+        window.location.href = 'home.html';
+    }
+</script>
+
+</body>
+</html>

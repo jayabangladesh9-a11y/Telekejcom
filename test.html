@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#007d3d"> 
+    <title>Bondhu Telecom - Premium UI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0; padding: 0; box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #f8fafc;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .app-shell {
+            width: 100%;
+            max-width: 450px;
+            background: #f8fafc;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            box-shadow: 0 0 30px rgba(0,0,0,0.05);
+        }
+
+        /* Compact Modern Header */
+        .top-header {
+            background: linear-gradient(135deg, #007d3d 0%, #005a2c 100%);
+            padding: 15px 20px;
+            color: white;
+            border-bottom-left-radius: 25px;
+            border-bottom-right-radius: 25px;
+            z-index: 100;
+        }
+
+        .header-top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .user-info { display: flex; align-items: center; gap: 10px; }
+        .user-img {
+            width: 40px; height: 40px;
+            border-radius: 50%; border: 2px solid rgba(255,255,255,0.3);
+            overflow: hidden; background: #fff;
+        }
+        .user-img img { width: 100%; height: 100%; object-fit: cover; }
+        .user-name h2 { font-size: 14px; font-weight: 700; }
+        .user-name p { font-size: 10px; opacity: 0.8; }
+
+        /* Compact Balance Button */
+        .balance-container { display: flex; justify-content: center; }
+        .balance-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            height: 36px;
+            min-width: 140px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            padding: 0 4px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .balance-card:active { transform: scale(0.95); }
+        .balance-icon {
+            width: 28px; height: 28px; background: white;
+            border-radius: 50%; display: flex;
+            justify-content: center; align-items: center;
+            color: #007d3d; font-size: 12px;
+        }
+        .balance-text { flex: 1; text-align: center; font-weight: 600; font-size: 13px; padding: 0 10px; }
+
+        /* Scrollable Content */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px 0 100px;
+        }
+        .main-content::-webkit-scrollbar { display: none; }
+
+        /* Grid Design Redesign */
+        .section-header {
+            display: flex; justify-content: space-between;
+            padding: 10px 20px; align-items: center;
+        }
+        .section-title { font-size: 14px; color: #1e293b; font-weight: 700; }
+        
+        .grid-container {
+            background: white; display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            padding: 20px 10px; margin: 0 15px 15px;
+            border-radius: 20px; gap: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        }
+        
+        .grid-item { text-align: center; transition: 0.2s; text-decoration: none; }
+        .icon-box {
+            width: 50px; height: 50px; background: #f1f9f4;
+            color: #007d3d; border-radius: 15px;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 6px; font-size: 20px; transition: 0.3s;
+        }
+        .grid-item:active .icon-box { background: #007d3d; color: white; transform: translateY(-3px); }
+        .grid-item span { font-size: 10px; font-weight: 600; color: #475569; display: block; }
+
+        /* Premium Slider */
+        .slider-wrapper { margin: 10px 15px 20px; border-radius: 20px; overflow: hidden; height: 140px; }
+        .slider-container { display: flex; transition: transform 0.6s ease-in-out; height: 100%; }
+        .slide { min-width: 100%; }
+        .slide img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: absolute; bottom: 0; width: 100%;
+            background: white; display: flex; justify-content: space-around;
+            padding: 10px 0 25px; border-top: 1px solid #f1f5f9;
+            z-index: 1000; height: 85px;
+        }
+        .nav-item { text-align: center; color: #94a3b8; font-size: 10px; flex: 1; text-decoration: none; transition: 0.3s; }
+        .nav-item.active { color: #007d3d; font-weight: 700; }
+        .nav-item i { display: block; font-size: 20px; margin-bottom: 4px; }
+    </style>
+</head>
+<body>
+
+<div class="app-shell">
+    <div class="top-header">
+        <div class="header-top-row">
+            <div class="user-info">
+                <div class="user-img">
+                    <img src="3.png" alt="Sazzad">
+                </div>
+                <div class="user-name">
+                    <p>স্বাগতম,</p>
+                    <h2>সাজ্জাদ হোসেন</h2>
+                </div>
+            </div>
+            <div class="notif-icon"><i class="far fa-bell text-lg"></i></div>
+        </div>
+
+        <div class="balance-container">
+            <div class="balance-card" id="balanceBtn">
+                <div class="balance-icon"><i class="fas fa-wallet"></i></div>
+                <span class="balance-text" id="balanceText">ব্যালেন্স দেখুন</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="slider-wrapper">
+            <div class="slider-container" id="slider">
+                <div class="slide"><img src="https://img.freepik.com/free-vector/digital-marketing-agency-corporate-web-banner-template_120329-3351.jpg" alt="1"></div>
+                <div class="slide"><img src="https://img.freepik.com/free-vector/cashback-concept-illustration_114360-5407.jpg" alt="2"></div>
+            </div>
+        </div>
+
+        <div class="section-header">
+            <span class="section-title">মূল সেবা</span>
+        </div>
+        <div class="grid-container">
+            <a href="send-money.html" class="grid-item">
+                <div class="icon-box"><i class="fas fa-paper-plane"></i></div>
+                <span>মানি সেন্ড</span>
+            </a>
+            <a href="cashout.html" class="grid-item">
+                <div class="icon-box"><i class="fas fa-hand-holding-usd"></i></div>
+                <span>ক্যাশ আউট</span>
+            </a>
+            <a href="recharge.html" class="grid-item">
+                <div class="icon-box"><i class="fas fa-mobile-alt"></i></div>
+                <span>রিচার্জ</span>
+            </a>
+            <a href="add-money.html" class="grid-item">
+                <div class="icon-box"><i class="fas fa-plus-circle"></i></div>
+                <span>অ্যাড মানি</span>
+            </a>
+        </div>
+
+        <div class="section-header">
+            <span class="section-title">অফার এবং পেমেন্ট</span>
+        </div>
+        <div class="grid-container">
+            <a href="offers.html" class="grid-item"><div class="icon-box"><i class="fas fa-bolt"></i></div><span>ইন্টারনেট</span></a>
+            <a href="drive-pack.html" class="grid-item"><div class="icon-box"><i class="fas fa-car-side"></i></div><span>ড্রাইভ প্যাক</span></a>
+            <a href="bill-pay.html" class="grid-item"><div class="icon-box"><i class="fas fa-file-invoice-dollar"></i></div><span>বিল পে</span></a>
+            <a href="more.html" class="grid-item"><div class="icon-box"><i class="fas fa-th-large"></i></div><span>আরও</span></a>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <a href="home.html" class="nav-item active">
+            <i class="fas fa-home"></i> হোম
+        </a>
+        <a href="transactions.html" class="nav-item">
+            <i class="fas fa-history"></i> লেনদেন
+        </a>
+        <a href="support.html" class="nav-item">
+            <i class="fas fa-headset"></i> সাপোর্ট
+        </a>
+        <a href="profile.html" class="nav-item">
+            <i class="fas fa-user-circle"></i> প্রোফাইল
+        </a>
+    </div>
+</div>
+
+<script>
+    // Balance Toggle Logic
+    const balanceBtn = document.getElementById('balanceBtn');
+    const balanceText = document.getElementById('balanceText');
+    let isBalanceShown = false;
+
+    balanceBtn.onclick = function() {
+        if (!isBalanceShown) {
+            balanceText.innerText = '৳ ৮,২২০.৩৫';
+            isBalanceShown = true;
+            setTimeout(() => {
+                balanceText.innerText = 'ব্যালেন্স দেখুন';
+                isBalanceShown = false;
+            }, 3000);
+        }
+    };
+
+    // Auto Slider
+    let currentSlide = 0;
+    setInterval(() => {
+        currentSlide = (currentSlide + 1) % 2;
+        const slider = document.getElementById('slider');
+        if(slider) slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+    }, 4000);
+</script>
+
+</body>
+</html>

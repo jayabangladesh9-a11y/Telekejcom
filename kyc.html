@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Scan NID - Bondhu Telecom</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: #ffffff; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+        .header { background-color: #007d3d; color: white; padding: 15px 20px; display: flex; align-items: center; justify-content: center; position: relative; }
+        .header h1 { font-size: 18px; font-weight: 600; }
+        .content { flex: 1; padding: 20px; overflow-y: auto; text-align: center; }
+        .scan-card-wrapper { margin-bottom: 40px; position: relative; display: inline-block; width: 100%; max-width: 350px; }
+        .card-placeholder { width: 100%; background-color: #f2f2f2; border-radius: 15px; aspect-ratio: 1.6 / 1; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid #e0e0e0; }
+        .preview-img { width: 100%; height: 100%; object-fit: cover; }
+        .camera-btn { position: absolute; bottom: -15px; right: 15px; background-color: #00b050; color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); cursor: pointer; }
+
+        #details-page { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 500; flex-direction: column; }
+        .details-container { padding: 20px; text-align: left; overflow-y: auto; flex: 1; }
+        .info-box { background: #f9f9f9; padding: 10px; border-radius: 10px; border: 1px solid #eee; margin-bottom: 12px; }
+        .info-label { font-size: 11px; color: #007d3d; font-weight: bold; text-transform: uppercase; margin-bottom: 4px; }
+        .info-value { border: none; background: transparent; width: 100%; font-size: 15px; color: #333; font-weight: 500; outline: none; padding: 2px 0; }
+
+        .footer-nav { padding: 15px 25px; border-top: 1px solid #eee; display: flex; align-items: center; justify-content: space-between; background: white; }
+        .btn-text { color: #333; font-weight: 700; text-transform: uppercase; font-size: 14px; cursor: pointer; }
+        .next-btn { color: #ccc; transition: 0.3s; }
+
+        #cropper-modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); flex-direction: column; align-items: center; justify-content: center; }
+        .cropper-container-box { width: 90%; max-width: 400px; background: white; border-radius: 10px; overflow: hidden; margin-bottom: 20px; }
+        .crop-btn { padding: 12px 30px; border-radius: 25px; border: none; cursor: pointer; font-weight: bold; }
+        #loading-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.95); z-index: 2000; flex-direction: column; align-items: center; justify-content: center; }
+
+        @media (min-width: 1025px) { body, #details-page, #cropper-modal, #loading-overlay { width: 450px; margin: auto; position: relative; } }
+    </style>
+</head>
+<body>
+
+    <div id="scan-page" style="display: flex; flex-direction: column; height: 100%;">
+        <div class="header"><h1>Scan ID</h1></div>
+        <div class="content">
+            <h2 style="font-size: 22px; color: #333; margin-top: 10px;">National ID</h2>
+            <p style="color: #888; font-size: 13px; margin-bottom: 30px;">দুই পাশের ছবি পরিষ্কারভাবে আপলোড করুন</p>
+
+            <div class="scan-card-wrapper">
+                <div class="card-placeholder" id="front-placeholder"><i class="fas fa-id-card" style="font-size: 50px; opacity: 0.1;"></i></div>
+                <input type="file" id="front-input" style="display:none" accept="image/*" onchange="initCropper(this, 'front-placeholder')">
+                <div class="camera-btn" onclick="document.getElementById('front-input').click()"><div class="fas fa-camera"></div></div>
+            </div>
+
+            <div class="scan-card-wrapper">
+                <div class="card-placeholder" id="back-placeholder"><i class="fas fa-id-card" style="font-size: 50px; opacity: 0.1; transform: scaleX(-1);"></i></div>
+                <input type="file" id="back-input" style="display:none" accept="image/*" onchange="initCropper(this, 'back-placeholder')">
+                <div class="camera-btn" onclick="document.getElementById('back-input').click()"><div class="fas fa-camera"></div></div>
+            </div>
+        </div>
+        <div class="footer-nav">
+            <div class="btn-text" onclick="window.history.back()">BACK</div>
+            <div class="btn-text next-btn" id="next-btn" onclick="startDataExtraction()">NEXT</div>
+        </div>
+    </div>
+
+    <div id="details-page">
+        <div class="header"><h1>NID Information</h1></div>
+        <div class="details-container">
+            <div class="info-box"><div class="info-label">Name (English)</div><input type="text" class="info-value" id="ext-name-en" placeholder="পাওয়া যায়নি"></div>
+            <div class="info-box"><div class="info-label">পিতার নাম</div><input type="text" class="info-value" id="ext-father" placeholder="পাওয়া যায়নি"></div>
+            <div class="info-box"><div class="info-label">মাতার নাম</div><input type="text" class="info-value" id="ext-mother" placeholder="পাওয়া যায়নি"></div>
+            <div class="info-box"><div class="info-label">NID নম্বর</div><input type="text" class="info-value" id="ext-id" placeholder="পাওয়া যায়নি"></div>
+            <div class="info-box"><div class="info-label">জন্ম তারিখ</div><input type="text" class="info-value" id="ext-dob" placeholder="পাওয়া যায়নি"></div>
+            <div class="info-box"><div class="info-label">ঠিকানা</div><textarea class="info-value" id="ext-address" rows="3" placeholder="পাওয়া যায়নি"></textarea></div>
+        </div>
+        <div class="footer-nav">
+            <div class="btn-text" onclick="location.reload()">RESCAN</div>
+            <div class="btn-text" style="color: #007d3d;">CONFIRM</div>
+        </div>
+    </div>
+
+    <div id="cropper-modal">
+        <div class="cropper-container-box"><img id="image-to-crop" style="max-width: 100%;"></div>
+        <div style="display:flex; gap: 10px;">
+            <button class="crop-btn" style="background:#ff4d4d; color:white;" onclick="closeModal()">CANCEL</button>
+            <button class="crop-btn" style="background:#007d3d; color:white;" id="save-crop">SAVE CROP</button>
+        </div>
+    </div>
+
+    <div id="loading-overlay">
+        <div class="fas fa-spinner fa-spin" style="font-size: 40px; color: #007d3d;"></div>
+        <p style="margin-top: 15px; font-weight: 600; color: #333;">তথ্য সংগ্রহ করা হচ্ছে...</p>
+        <span id="load-status" style="font-size: 12px; color: #666; margin-top: 5px;">প্রসেস শুরু হচ্ছে...</span>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+
+    <script>
+        let cropper, currentPlaceholderId;
+        let images = { 'front-placeholder': null, 'back-placeholder': null };
+        const OCR_API_KEY = 'K87234567888957'; 
+
+        function initCropper(input, placeholderId) {
+            const file = input.files[0];
+            if (file) {
+                currentPlaceholderId = placeholderId;
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    document.getElementById('image-to-crop').src = e.target.result;
+                    document.getElementById('cropper-modal').style.display = 'flex';
+                    if (cropper) cropper.destroy();
+                    cropper = new Cropper(document.getElementById('image-to-crop'), { aspectRatio: 1.6 / 1, viewMode: 1 });
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        document.getElementById('save-crop').addEventListener('click', function() {
+            const canvas = cropper.getCroppedCanvas();
+            const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+            document.getElementById(currentPlaceholderId).innerHTML = `<img src="${dataUrl}" class="preview-img">`;
+            images[currentPlaceholderId] = dataUrl;
+            closeModal();
+            checkValidation();
+        });
+
+        async function startDataExtraction() {
+            if (!images['front-placeholder'] || !images['back-placeholder']) return;
+            document.getElementById('loading-overlay').style.display = 'flex';
+            
+            document.getElementById('load-status').innerText = "এনআইডি স্ক্যান হচ্ছে...";
+            let frontText = await callOCR(images['front-placeholder'], 'ben');
+            let frontTextEng = await callOCR(images['front-placeholder'], 'eng');
+            
+            document.getElementById('load-status').innerText = "ঠিকানা যাচাই করা হচ্ছে...";
+            let backText = await callOCR(images['back-placeholder'], 'ben');
+
+            parseNIDData(frontText, frontTextEng, backText);
+
+            document.getElementById('loading-overlay').style.display = 'none';
+            document.getElementById('scan-page').style.display = 'none';
+            document.getElementById('details-page').style.display = 'flex';
+        }
+
+        async function callOCR(base64Image, lang) {
+            try {
+                let formData = new FormData();
+                formData.append('base64Image', base64Image);
+                formData.append('apikey', OCR_API_KEY);
+                formData.append('language', lang);
+                formData.append('OCREngine', '2'); 
+
+                let response = await fetch('https://api.ocr.space/parse/image', {
+                    method: 'POST',
+                    body: formData
+                });
+                let result = await response.json();
+                return result.ParsedResults ? result.ParsedResults[0].ParsedText : "";
+            } catch (error) {
+                console.error("OCR Error:", error);
+                return "";
+            }
+        }
+
+        function parseNIDData(frontBen, frontEng, backBen) {
+            const combinedFront = frontBen + " " + frontEng;
+            
+            const idMatch = combinedFront.match(/\d{10,17}/);
+            document.getElementById('ext-id').value = idMatch ? idMatch[0] : "পাওয়া যায়নি";
+
+            const dobMatch = combinedFront.match(/\d{2} [A-Za-z]{3} \d{4}/) || combinedFront.match(/\d{2}\/\d{2}\/\d{4}/) || combinedFront.match(/\d{2}-\d{2}-\d{4}/) || combinedFront.match(/[০-৯]{২} [^০-৯]{৩} [০-৯]{৪}/);
+            document.getElementById('ext-dob').value = dobMatch ? dobMatch[0] : "পাওয়া যায়নি";
+
+            const linesEng = frontEng.split('\n');
+            linesEng.forEach((line, index) => {
+                let cleanLine = line.trim().toUpperCase();
+                if (cleanLine.includes('NAME') && !cleanLine.includes('FATHER') && !cleanLine.includes('MOTHER')) {
+                    document.getElementById('ext-name-en').value = linesEng[index+1]?.trim() || linesEng[index].replace('NAME', '').trim();
+                }
+            });
+
+            const linesBen = frontBen.split('\n');
+            linesBen.forEach((line, index) => {
+                if (line.includes('পিতা') || line.includes('Father')) {
+                    document.getElementById('ext-father').value = linesBen[index]?.split(':').pop().trim() || linesBen[index+1]?.trim();
+                }
+                if (line.includes('মাতা') || line.includes('Mother')) {
+                    document.getElementById('ext-mother').value = linesBen[index]?.split(':').pop().trim() || linesBen[index+1]?.trim();
+                }
+            });
+
+            if (backBen.trim().length > 5) {
+                let addressText = backBen.replace(/\n/g, " ").trim();
+                document.getElementById('ext-address').value = addressText;
+            }
+        }
+
+        function closeModal() { document.getElementById('cropper-modal').style.display = 'none'; if (cropper) cropper.destroy(); }
+        
+        function checkValidation() {
+            if (images['front-placeholder'] && images['back-placeholder']) {
+                document.getElementById('next-btn').style.color = '#007d3d';
+                document.getElementById('next-btn').style.cursor = 'pointer';
+            }
+        }
+    </script>
+</body>
+</html>
